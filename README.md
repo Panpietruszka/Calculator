@@ -20,3 +20,7 @@ Currency	Real-time currency exchange rates (requires internet connectivity).
 Date Difference	Calculate the exact number of days between any two dates.
 Date Arithmetic	Add or subtract days, weeks, months, or years from a given date (e.g., "What date is 180 days from today?").
 Day of Week	Determine the day of the week for any past or future date.
+
+#Link
+Here is link to calculator website
+https://panpietruszka.github.io/Calculator/
