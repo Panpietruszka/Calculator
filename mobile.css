@@ -15,7 +15,7 @@
         width: 100% !important; 
         max-width: 500px;
         height: auto; /* Adjusted for mobile */
-        min-height: 85vh; /* Adjusted for mobile */
+        min-height: 78vh; /* Adjusted for mobile */
         flex-direction: column; 
         margin: 0 auto;
         border-radius: 10px; /* Adjusted for mobile */
@@ -68,7 +68,7 @@
         padding: 15px; 
         grid-template-rows: 15% 1fr;
         height: auto; /* Adjusted for mobile */
-        max-height: 75vh; /* Adjusted for mobile */
+        min-height: 75vh; /* Adjusted for mobile */
     }
     .calculator-body.programming-mode {
         max-height: 60vh;
@@ -462,6 +462,7 @@
         pointer-events: auto;
         display: grid; 
         grid-template-columns: repeat(6, 2fr); 
+        margin-top: 4rem;
         /* gap: var(--button-gap); */
     }
 
@@ -560,4 +561,3 @@
         transform: translateX(-3rem);
     }
 }
-
