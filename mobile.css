@@ -15,13 +15,13 @@
         width: 100% !important; 
         max-width: 500px;
         height: auto; /* Adjusted for mobile */
-        min-height: 78vh; /* Adjusted for mobile */
+        min-height: 90vh; /* Adjusted for mobile */
         flex-direction: column; 
         margin: 0 auto;
         border-radius: 10px; /* Adjusted for mobile */
         box-shadow: none; /* Adjusted for mobile */
         transition: none; /* Adjusted for mobile */
-        transform: translateY(-2rem);
+        transform: translateY(-3rem);
         padding: 0;
     }
 
@@ -68,11 +68,11 @@
         padding: 15px; 
         grid-template-rows: 15% 1fr;
         height: auto; /* Adjusted for mobile */
-        min-height: 75vh; /* Adjusted for mobile */
+        min-height: 90vh; /* Adjusted for mobile */
     }
     .calculator-body.programming-mode {
         max-height: 60vh;
-        min-width: 400px;
+        max-width: 400px;
     }
     .calculator-body.scientific-mode {
         max-height: 60vh;
@@ -457,12 +457,11 @@
     }
     
     .calculator-body.programming-mode .programming-buttons {
-        max-height: 500px; 
+        max-height: 400px; 
         opacity: 1;
         pointer-events: auto;
         display: grid; 
-        grid-template-columns: repeat(6, 2fr); 
-        margin-top: 4rem;
+        grid-template-columns: repeat(5, 1fr); 
         /* gap: var(--button-gap); */
     }
 
@@ -493,7 +492,7 @@
 
     .date-calculator-body {
         width: 100%;
-        padding: 0 500px; /* Note: This padding value seems extremely large for a max-width of 700px and might be a typo in the original code. It is preserved here but should be checked if this causes layout issues. */
+        padding: 0 200px; /* Note: This padding value seems extremely large for a max-width of 700px and might be a typo in the original code. It is preserved here but should be checked if this causes layout issues. */
         box-sizing: border-box;
     }
     
@@ -559,5 +558,63 @@
     }
     .menu-content {
         transform: translateX(-3rem);
+    }
+    .container {
+        position: absolute;
+        bottom: 2%;
+        left: 50%;
+        transform: translate(-50%, 2%);
+    }
+}
+/* ========================================================= */
+/* 🔥 FIX: Specyficzne style dla najmniejszych telefonów (< 375px) 🔥 */
+/* ========================================================= */
+@media (max-width: 374px) { 
+
+    /* Napraw błąd: Używasz flex-direction: column dla .buttons-container, 
+       ale w trybie scientific-mode ustawiasz .scientific-buttons na flex-direction: row. 
+       Musisz dostosować rozmiary przycisków, żeby się mieściły. */
+
+    :root {
+        /* Dalsze zmniejszenie rozmiaru przycisków i odstępów na bardzo małych ekranach */
+        --button-size: 55px; /* Było 65px, teraz 55px */
+        --button-gap: 3px;   /* Było 5px, teraz 3px */
+    }
+
+    .main-content {
+        /* Minimalne dostosowanie głównego kontenera */
+        max-width: 100%; /* Upewnij się, że nie jest za mały */
+    }
+
+    /* W trybie naukowym/programistycznym przyciski są bardzo ciasne, 
+       więc usuń marginesy/paddingi, które mogą powodować przepełnienie */
+    .main-content.scientific-mode,
+    .main-content.programming-mode {
+        padding-right: 5px; /* Zmniejsz padding */
+        padding-left: 5px; 
+    }
+    
+    .calculator-body {
+        padding: 5px; /* Zmniejsz padding głównego ciała kalkulatora */
+    }
+    
+    /* Zmień rozmiary czcionek, aby wszystko się zmieściło */
+    #input {
+        font-size: 1.8rem; 
+    }
+
+    /* Zmiana układu przycisków programistycznych */
+    .calculator-body.programming-mode .programming-buttons {
+        /* W 360px lub 320px 5 kolumn (repeat(5, 1fr)) jest za ciasne! 
+           Zmień na 4 kolumny lub dostosuj rozmiar przycisków HEX*/
+        grid-template-columns: repeat(4, 1fr); /* W 360px 4 kolumny wyglądają lepiej */
+    }
+    
+    /* Jeśli .menu-content jest ciągle za małe (dotyczy przesuwania trybów) */
+    .menu-content.scientific-active {
+        transform: translateX(-10rem); /* Mniejsze przesunięcie dla mniejszego ekranu */
+    }
+    .menu-content.programming-active {
+        transform: translateX(0rem); /* Zerowe przesunięcie lub minimalne */
     }
 }
