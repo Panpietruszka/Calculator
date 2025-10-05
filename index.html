@@ -1,0 +1,698 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculator</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="mobile.css">
+    <link rel="stylesheet" href="style-2.0.css">
+    <link rel="stylesheet" href="przeliczniki.css">
+    <link rel="stylesheet" href="date-style.css">
+    <link rel="stylesheet" href="animation.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="shortcut icon" href="calculator.png" type="image/x-icon">
+    <style>
+        .converter-section {
+            display: none;
+            /* Hide all converter sections by default */
+        }
+        .converter-section.active-converter {
+            display: block;
+            /* Show only the active converter */
+        }
+        /* Ensure converter-mode-body is hidden when not section-visible */
+        .converter-mode-body:not(.section-visible) {
+            display: none;
+        }
+        .calculator-body:not(.section-visible) {
+            display: none;
+        }
+        .date-calculator-body:not(.section-visible) {
+            display: none;
+        }
+        .history-list-container {
+            width: 80%;
+            transform: translateX(5rem);
+        }
+        @media (max-width: 700px) {
+            .history-list-container {
+                width: 100%;
+                transform: none;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <main>
+        <div class="main-content">
+            <div class="hamburger-menu">
+                <div class="back-icon" id="back-to-calc">
+                    <img src="back.png" alt="Back" style="width: 25px; height: 25px;">
+                </div>
+                <div class="hamburger-icon">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </div>
+            <div class="calculator-body section-visible">
+                <input type="text" name="" id="input" placeholder="0">
+                <div id="result">0</div>
+                <div class="buttons-container">
+                    <div class="programming-buttons">
+                        <button class="block special-button program-mode" data-mode="dec">DEC</button>
+                        <button class="block special-button program-mode" data-mode="hex">HEX</button>
+                        <button class="block special-button program-mode" data-mode="oct">OCT</button>
+                        <button class="block special-button program-mode" data-mode="bin">BIN</button>
+                        <button class="block special-button programming-bit" data-bit="&lt;&lt; ">&lt;&lt;</button>
+                        <button class="block special-button programming-bit" data-bit="&gt;&gt; ">&gt;&gt;</button>
+                        <button class="block special-button programming-bit" data-bit="AND ">AND</button>
+                        <button class="block special-button programming-bit" data-bit="OR ">OR</button>
+                        <button class="block special-button programming-bit" data-bit="XOR ">XOR</button>
+                        <button class="block special-button programming-bit" data-bit="NOT ">NOT</button>
+                        <button class="block special-button programming-alpha" data-val="A">A</button>
+                        <button class="block special-button programming-alpha" data-val="B">B</button>
+                        <button class="block special-button programming-alpha" data-val="C">C</button>
+                        <button class="block special-button programming-alpha" data-val="D">D</button>
+                        <button class="block special-button programming-alpha" data-val="E">E</button>
+                        <button class="block special-button programming-alpha" data-val="F">F</button>
+                    </div>
+                    <div class="scientific-buttons">
+                        <button class="block special-button scientific" data-fn="10^x">10<sup>x</sup></button>
+                        <button class="block special-button scientific" data-fn="log">log</button>
+                        <button class="block special-button scientific" data-fn="exp">exp</button>
+                        <button class="block special-button scientific" data-fn="rad">rad</button>
+                        <button class="block special-button scientific" data-fn="x^2">x<sup>2</sup></button>
+                        <button class="block special-button scientific" data-val="(">(</button>
+                        <button class="block special-button scientific" data-val="pi">&pi;</button>
+                        <button class="block special-button scientific" data-fn="deg">deg</button>
+                        <button class="block special-button scientific" data-fn="tanh">tanh</button>
+                        <button class="block special-button scientific" data-val=")">)</button>
+                        <button class="block special-button scientific" data-fn="ln">ln</button>
+                        <button class="block special-button scientific" data-fn="sin">sin</button>
+                        <button class="block special-button scientific" data-fn="sqrt"><sup>2</sup>&radic;x</button>
+                        <button class="block special-button scientific" data-fn="2nd">2<sup>nd</sup></button>
+                        <button class="block special-button scientific" data-fn="x^y">x<sup>y</sup></button>
+                        <button class="block special-button scientific" data-fn="cos">cos</button>
+                        <button class="block special-button scientific" data-fn="cbrt"><sup>3</sup>&radic;x</button>
+                        <button class="block special-button scientific" data-op="mod">mod</button>
+                        <button class="block special-button scientific" data-fn="abs" id="magic-trick">|x|</button>
+                        <button class="block special-button scientific" data-fn="n!" id="magic-trick">n!</button>
+                    </div>
+                    <div class="normal-buttons">
+                        <div class="row">
+                            <button class="block number-button" data-val="7">7</button>
+                            <button class="block number-button" data-val="8">8</button>
+                            <button class="block number-button" data-val="9">9</button>
+                            <button class="block special-button" data-op="+">+</button>
+                            <button class="block special-button" data-fn="AC">AC</button>
+                        </div>
+                        <div class="row">
+                            <button class="block number-button" data-val="4">4</button>
+                            <button class="block number-button" data-val="5">5</button>
+                            <button class="block number-button" data-val="6">6</button>
+                            <button class="block special-button" data-op="×">&times;</button>
+                            <button class="block special-button" data-fn="backspace">⌫</button>
+                        </div>
+                        <div class="row">
+                            <button class="block number-button" data-val="1">1</button>
+                            <button class="block number-button" data-val="2">2</button>
+                            <button class="block number-button" data-val="3">3</button>
+                            <button class="block special-button" data-op="-">-</button>
+                            <button class="block special-button" data-op="%">%</button>
+                        </div>
+                        <div class="row">
+                            <button class="block special-button" data-op="/">/</button>
+                            <button class="block number-button" data-val="0">0</button>
+                            <button class="block special-button" data-val=".">.</button>
+                            <button class="block special-button" data-fn="plus-minus">&plusmn;</button>
+                            <button class="block equals-button" data-fn="equals">=</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="date-calculator-body" data-mode="date">
+                <div class="converter-section active-converter" data-converter-type="date">
+                    <h3 style="white-space: nowrap;">Date Calculator</h3>
+                    <div class="converter-inputs">
+                        <div class="input-group">
+                            <label for="date-from">From:</label>
+                            <input type="date" id="date-from" autocomplete="off" class="date-input">
+                        </div>
+                        <div class="swap-icon-container">
+                            <span class="swap-icon"><i class="fas fa-exchange-alt"></i></span>
+                        </div>
+                        <div class="input-group">
+                            <label for="date-to">To:</label>
+                            <input type="date" id="date-to" autocomplete="off" class="date-input">
+                        </div>
+                    </div>
+                    <div class="result-row" id="current-result">
+                        <h4>Current Result</h4>
+                        <span id="date-result-value">0 days</span>
+                    </div>
+                    <div class="date-detailed-results">
+                        <div class="result-row">
+                            <span>Years:</span>
+                            <span id="years-result">0</span>
+                        </div>
+                        <div class="result-row">
+                            <span>Months:</span>
+                            <span id="months-result">0</span>
+                        </div>
+                        <div class="result-row">
+                            <span>Days:</span>
+                            <span id="days-result">0</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="date-same-dates-message" style="display: none; text-align: center; color: var(--color-text-secondary);">
+                    Same dates
+                </div>
+            </div>
+            <div class="converter-mode-body">
+                <div class="converter-section active-converter" data-converter-type="currency">
+                    <h3>Currency Converter</h3>
+                    <div class="converter-inputs">
+                        <div class="input-group">
+                            <input type="text" id="from-currency-input" placeholder="Value">
+                            <div class="custom-select select-opens-down" id="custom-from-currency-select" data-target-id="from-currency-select">
+                                <div class="select-selected" data-value="PLN">PLN - Polish Złoty</div>
+                                <div class="select-items select-hide custom-select-list" data-select-id="from-currency-select-items"></div>
+                            </div>
+                        </div>
+                        <div class="swap-icon-container">
+                            <span id="swap-icon" class="swap-icon"><i class="fas fa-exchange-alt"></i></span>
+                        </div>
+                        <div class="input-group">
+                            <input type="text" id="to-currency-input" placeholder="Value">
+                            <div class="custom-select select-opens-up" id="custom-to-currency-select" data-target-id="to-currency-select">
+                                <div class="select-selected" data-value="USD">USD - US Dollar</div>
+                                <div class="select-items select-hide custom-select-list" data-select-id="to-currency-select-items"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="converter-section" data-converter-type="length">
+                    <h3>Length Converter</h3>
+                    <div class="converter-inputs">
+                        <div class="input-group">
+                            <input type="text" id="from-length" placeholder="Value" autocomplete="off">
+                            <div class="custom-select select-opens-down" id="custom-from-length-select" data-target-id="from-length-select">
+                                <div class="select-selected" data-value="cm">cm - centimeters</div>
+                                <div class="select-items select-hide custom-select-list" data-select-id="from-length-select-items"></div>
+                            </div>
+                        </div>
+                        <div class="swap-icon-container">
+                            <span id="swap-icon-length" class="swap-icon"><i class="fas fa-exchange-alt"></i></span>
+                        </div>
+                        <div class="input-group">
+                            <input type="text" id="to-length" placeholder="Value" autocomplete="off" disabled>
+                            <div class="custom-select select-opens-up" id="custom-to-length-select" data-target-id="to-length-select">
+                                <div class="select-selected" data-value="m">m - meters</div>
+                                <div class="select-items select-hide custom-select-list" data-select-id="to-length-select-items"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="converter-section" data-converter-type="mass">
+                    <h3>Mass Converter</h3>
+                    <div class="converter-inputs">
+                        <div class="input-group">
+                            <input type="text" id="from-mass" placeholder="Value" autocomplete="off">
+                            <div class="custom-select select-opens-down" id="custom-from-mass-select" data-target-id="from-mass-select">
+                                <div class="select-selected" data-value="kg">kg - kilograms</div>
+                                <div class="select-items select-hide custom-select-list" data-select-id="from-mass-select-items"></div>
+                            </div>
+                        </div>
+                        <div class="swap-icon-container">
+                            <span id="swap-icon-mass" class="swap-icon"><i class="fas fa-exchange-alt"></i></span>
+                        </div>
+                        <div class="input-group">
+                            <input type="text" id="to-mass" placeholder="Value" autocomplete="off" disabled>
+                            <div class="custom-select select-opens-up" id="custom-to-mass-select" data-target-id="to-mass-select">
+                                <div class="select-selected" data-value="g">g - grams</div>
+                                <div class="select-items select-hide custom-select-list" data-select-id="to-mass-select-items"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="converter-section" data-converter-type="temperature">
+                    <h3 style="white-space: nowrap;">Temperature Converter</h3>
+                    <div class="converter-inputs">
+                        <div class="input-group">
+                            <input type="text" id="from-temperature" placeholder="Value" autocomplete="off">
+                            <div class="custom-select select-opens-down" id="custom-from-temperature-select" data-target-id="from-temperature-select">
+                                <div class="select-selected" data-value="C">°C - Celsius</div>
+                                <div class="select-items select-hide custom-select-list" data-select-id="from-temperature-select-items"></div>
+                            </div>
+                        </div>
+                        <div class="swap-icon-container">
+                            <span id="swap-icon-temperature" class="swap-icon"><i class="fas fa-exchange-alt"></i></span>
+                        </div>
+                        <div class="input-group">
+                            <input type="text" id="to-temperature" placeholder="Value" autocomplete="off" disabled>
+                            <div class="custom-select select-opens-up" id="custom-to-temperature-select" data-target-id="to-temperature-select">
+                                <div class="select-selected" data-value="F">°F - Fahrenheit</div>
+                                <div class="select-items select-hide custom-select-list" data-select-id="to-temperature-select-items"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="converter-section" data-converter-type="volume">
+                    <h3>Volume Converter</h3>
+                    <div class="converter-inputs">
+                        <div class="input-group">
+                            <input type="text" id="from-volume" placeholder="Value" autocomplete="off">
+                            <div class="custom-select select-opens-down" id="custom-from-volume-select" data-target-id="from-volume-select">
+                                <div class="select-selected" data-value="l">l - liters</div>
+                                <div class="select-items select-hide custom-select-list" data-select-id="from-volume-select-items"></div>
+                            </div>
+                        </div>
+                        <div class="swap-icon-container">
+                            <span id="swap-icon-volume" class="swap-icon"><i class="fas fa-exchange-alt"></i></span>
+                        </div>
+                        <div class="input-group">
+                            <input type="text" id="to-volume" placeholder="Value" autocomplete="off" disabled>
+                            <div class="custom-select select-opens-up" id="custom-to-volume-select" data-target-id="to-volume-select">
+                                <div class="select-selected" data-value="m3">m³ - cubic meters</div>
+                                <div class="select-items select-hide custom-select-list" data-select-id="to-volume-select-items"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="menu-panel">
+                <div class="menu-content active-panel" data-panel="main">
+                    <h3>Calculator</h3>
+                    <ul class="menu-items">
+                        <li><img src="history.png" alt=""><a href="#" id="history-link">History</a></li>
+                        <li><img src="transfer.png" alt=""><a href="#" id="converter-link">Converters</a></li>
+                        <li><img src="code.png" alt=""><a href="#" id="programming-link">Programmer Calculator</a></li>
+                        <li><img src="chemistry.png" alt=""><a href="#" id="scientific-link">Scientific Calculator</a></li>
+                        <li><img src="calendar.png" alt=""><a href="#" id="date-link">Date Calculator</a></li>
+                    </ul>
+                </div>
+
+
+                <div class="history-content" data-panel="history">
+                    <h4 class="history-title">Calculation History</h4>
+                    <div class="history-list-container js-scroll-list">
+                        <ul id="history-list">
+                        </ul>
+
+                    </div>
+                    <button id="clear-history-btn">Clear History</button>
+                </div>
+
+                <div class="converter-content" data-panel="converters">
+                    <h3 class="converters-title">Converters</h3>
+                    <ul class="converters-list">
+                        <li data-converter="currency"><a href="#" data-converter-type="currency">Currency</a></li>
+                        <li data-converter="length"><a href="#" data-converter-type="length">Length</a></li>
+                        <li data-converter="mass"><a href="#" data-converter-type="mass">Mass</a></li>
+                        <li data-converter="temperature"><a href="#" data-converter-type="temperature">Temperature</a>
+                        </li>
+                        <li data-converter="volume"><a href="#" data-converter-type="volume">Volume</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </main>
+    <div class="container">
+        <div class="radio-input">
+            <label>
+                <input type="radio" id="value-1" name="value-radio" value="value-1">
+                <span id="value-1-text">Light</span>
+            </label>
+            <label>
+                <input type="radio" id="value-2" name="value-radio" value="value-2" checked>
+                <span id="value-2-text">Normal</span>
+            </label>
+            <label>
+                <input type="radio" id="value-3" name="value-radio" value="value-3">
+                <span id="value-3-text">Dark</span>
+            </label>
+            <label>
+                <input type="radio" id="value-4" name="value-radio" value="value-4">
+                <span id="value-3-text">Black</span>
+            </label>
+            <span class="selection"></span>
+        </div>
+    </div>
+</body>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="script.js"></script>
+    <script src="script-2.0.js"></script>
+    <script src="text-logic.js"></script>
+    <script src="animation.js"></script>
+    <script src="przelicznki.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/smooth-scrollbar/8.3.1/smooth-scrollbar.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/smooth-scrollbar/8.3.1/plugins/overscroll.js"></script>
+<script>
+    $(document).ready(function () {
+        // === MAIN INTERFACE VARIABLES ===
+        const MAIN_CONTENT = $('.main-content'); // Added reference to the main container
+        const CALCULATOR_BODY = $('.calculator-body');
+        const DATE_CALCULATOR_BODY = $('.date-calculator-body');
+        const CONVERTER_CONTENT_PANEL = $('.converter-content');
+        const CONVERTER_MODE_BODY = $('.converter-mode-body');
+        const MENU_PANEL = $('.menu-panel');
+        const HAMBURGER_ICON = $('.hamburger-icon');
+        const BACK_ICON = $('.back-icon');
+        const DATE_LINK = $('#date-link');
+        const HISTORY_CONTENT_PANEL = $('.history-content');
+
+        const DATE_FROM_INPUT = $('#date-from');
+        const DATE_TO_INPUT = $('#date-to');
+        const DATE_SWAP_ICON = $('.date-calculator-body .swap-icon');
+
+        let activeInput = null;
+
+        // === VIEW HANDLING FUNCTIONS ===
+        
+        // 💡 KEY CHANGE: FUNCTION TO RESET WIDTH MODE CLASSES
+        function resetCalculatorModes() {
+            // Removes mode classes that may modify the width of the main container
+            MAIN_CONTENT.removeClass('scientific-mode programming-mode');
+            CALCULATOR_BODY.removeClass('scientific-mode programming-mode');
+        }
+
+        function showCalculatorView() {
+            // ✅ Use reset when returning to the default calculator
+            resetCalculatorModes(); 
+            
+            CONVERTER_MODE_BODY.removeClass('section-visible');
+            CONVERTER_CONTENT_PANEL.removeClass('section-visible');
+            DATE_CALCULATOR_BODY.removeClass('section-visible');
+            HISTORY_CONTENT_PANEL.removeClass('section-visible');
+            CALCULATOR_BODY.addClass('section-visible');
+            HAMBURGER_ICON.show();
+            activeInput = document.getElementById('input');
+            if (activeInput) activeInput.focus();
+        }
+
+        function showConverterListMenu() {
+            $('.menu-content').removeClass('active-panel');
+            $('.history-content').removeClass('active-panel');
+            CONVERTER_CONTENT_PANEL.addClass('active-panel');
+            MENU_PANEL.addClass('visible');
+        }
+
+        function showConverterSection(converterType) {
+            // ✅ Use reset before switching to a converter section
+            resetCalculatorModes(); 
+            
+            CALCULATOR_BODY.removeClass('section-visible');
+            DATE_CALCULATOR_BODY.removeClass('section-visible');
+            CONVERTER_MODE_BODY.addClass('section-visible');
+            MENU_PANEL.removeClass('visible');
+            HAMBURGER_ICON.show();
+
+            $('.converter-section').removeClass('active-converter');
+
+            const targetSection = $(`.converter-section[data-converter-type="${converterType}"]`);
+            targetSection.addClass('active-converter');
+
+            setTimeout(() => {
+                const topInput = targetSection.find('input[type="text"], input[type="number"]').first();
+                if (topInput.length) {
+                    topInput.focus();
+                    activeInput = topInput[0];
+                } else {
+                    activeInput = null;
+                }
+            }, 10);
+        }
+
+        function showDateCalculatorView() {
+            // ✅ Use reset before switching to the Date Calculator
+            resetCalculatorModes();
+            
+            CALCULATOR_BODY.removeClass('section-visible');
+            CONVERTER_MODE_BODY.removeClass('section-visible');
+            CONVERTER_CONTENT_PANEL.removeClass('section-visible');
+            HISTORY_CONTENT_PANEL.removeClass('section-visible');
+            MENU_PANEL.removeClass('visible');
+
+            DATE_CALCULATOR_BODY.addClass('section-visible');
+            HAMBURGER_ICON.show();
+        }
+
+        // === DATE CALCULATOR LOGIC ===
+
+        function calculateDateDifference() {
+            const dateFrom = DATE_FROM_INPUT.val();
+            const dateTo = DATE_TO_INPUT.val();
+
+            // VIEW VARIABLES
+            const dateCalcResult = $('.date-calc-result'); 
+            const currentResultRow = $('#current-result'); 
+            const detailedResults = $('.date-detailed-results'); 
+            const sameDatesMessage = $('.date-same-dates-message');
+
+            // RESULT VARIABLES
+            const yearsResult = $('#years-result');
+            const monthsResult = $('#months-result');
+            const daysResult = $('#days-result');
+            const totalDaysResult = $('#date-result-value');
+
+            if (dateFrom && dateTo) {
+                const d1 = new Date(dateFrom);
+                const d2 = new Date(dateTo);
+                
+                // 1. Handle "Same dates"
+                if (d1.getTime() === d2.getTime()) {
+                    dateCalcResult.hide(); 
+                    currentResultRow.hide(); 
+                    detailedResults.hide(); 
+                    sameDatesMessage.show();
+                    return;
+                }
+
+                sameDatesMessage.hide();
+                dateCalcResult.show(); 
+                currentResultRow.show(); 
+
+                const diffTime = Math.abs(d2 - d1);
+                const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+                // Note: The displayed text should match the HTML: '0 dni' -> '0 days'
+                totalDaysResult.text(`${diffDays} days`);
+
+                // 2. Logic for hiding/showing detailed breakdown
+                if (diffDays < 31) {
+                    // Less than 31 days - show only total days, hide details
+                    detailedResults.hide();
+                } else {
+                    // 31 days or more - show details
+                    detailedResults.show();
+
+                    if (diffDays < 365.25) { // Less than a year (show only months and days)
+                        const diffMonths = Math.floor(diffDays / 30.44);
+                        const finalDays = Math.floor(diffDays % 30.44);
+
+                        yearsResult.closest('.result-row').hide();
+                        monthsResult.text(diffMonths);
+                        daysResult.text(finalDays);
+                    } else { // More than a year (show years, months, and days)
+                        const diffYears = Math.floor(diffDays / 365.25);
+                        const remainingDays = diffDays % 365.25;
+                        const diffMonths = Math.floor(remainingDays / 30.44);
+                        const finalDays = Math.floor(remainingDays % 30.44);
+
+                        yearsResult.closest('.result-row').show();
+                        yearsResult.text(diffYears);
+                        monthsResult.text(diffMonths);
+                        daysResult.text(finalDays);
+                    }
+                }
+            }
+        }
+
+        // Note: This function uses elements that were not present in the provided HTML but is translated for consistency.
+        function addSubtractDate(operation) {
+            const dateInput = document.getElementById('date-from').value;
+            const value = parseInt(document.getElementById('date-op-value').value);
+            const unit = document.getElementById('date-op-unit').value;
+
+            if (!dateInput || isNaN(value)) {
+                // Translated error message: 'Błąd: Podaj datę i wartość.'
+                document.getElementById('new-date-result').innerText = 'Error: Enter date and value.';
+                return;
+            }
+
+            const d = new Date(dateInput);
+            d.setMinutes(d.getMinutes() + d.getTimezoneOffset());
+
+            const multiplier = operation === 'add' ? 1 : -1;
+
+            switch (unit) {
+                case 'days':
+                    d.setDate(d.getDate() + value * multiplier);
+                    break;
+                case 'weeks':
+                    d.setDate(d.getDate() + value * 7 * multiplier);
+                    break;
+                case 'months':
+                    d.setMonth(d.getMonth() + value * multiplier);
+                    break;
+                case 'years':
+                    d.setFullYear(d.getFullYear() + value * multiplier);
+                    break;
+            }
+
+            const newDate = d.toISOString().split('T')[0];
+            document.getElementById('new-date-result').innerText = newDate;
+        }
+
+        window.showConverterSection = showConverterSection;
+        window.calculateDateDifference = calculateDateDifference;
+        window.addSubtractDate = addSubtractDate;
+
+        // -----------------------------------------------------------------
+        // === LISTENING FOR NAVIGATION AND DATE CALCULATOR EVENTS ===
+        // -----------------------------------------------------------------
+
+        $('#converter-link').on('click', function (e) {
+            e.preventDefault();
+            showConverterListMenu();
+        });
+
+        DATE_LINK.on('click', function (e) {
+            e.preventDefault();
+            showDateCalculatorView();
+        });
+
+        HAMBURGER_ICON.on('click', () => {
+            MENU_PANEL.toggleClass('visible');
+            if (MENU_PANEL.hasClass('visible')) {
+                CONVERTER_CONTENT_PANEL.removeClass('active-panel');
+                $('.history-content').removeClass('active-panel');
+                $('.menu-content').addClass('active-panel');
+            }
+        });
+
+        BACK_ICON.on('click', function () {
+            showCalculatorView(); 
+        });
+
+        $('.converter-content .converters-list a').on('click', function (e) {
+            e.preventDefault();
+            const type = $(this).data('converter-type');
+            if (type) {
+                showConverterSection(type);
+            }
+        });
+
+        DATE_SWAP_ICON.on('click', function () {
+            const fromDate = DATE_FROM_INPUT.val();
+            const toDate = DATE_TO_INPUT.val();
+            DATE_FROM_INPUT.val(toDate);
+            DATE_TO_INPUT.val(fromDate);
+            calculateDateDifference();
+        });
+
+        DATE_FROM_INPUT.on('change', calculateDateDifference);
+        DATE_TO_INPUT.on('change', calculateDateDifference);
+        $('#date-add-btn').on('click', () => addSubtractDate('add'));
+        $('#date-subtract-btn').on('click', () => addSubtractDate('subtract'));
+
+        // -----------------------------------------------------------------
+        // === FOCUS AND KEYDOWN HANDLING (CONVERTER LOGIC) ===
+        // -----------------------------------------------------------------
+
+        $(document).on('focus', '.converter-section input', function () {
+            activeInput = this;
+        });
+
+        $(document).on('keydown', function (e) {
+            if (CONVERTER_MODE_BODY.hasClass('section-visible') && activeInput && !$(e.target).closest('.menu-panel').length) {
+                const activeConverterType = $(activeInput).closest('.converter-section').data('converter-type');
+                const isCurrencyInput = activeConverterType === 'currency';
+                const isLengthInput = activeConverterType === 'length';
+                const isMassInput = activeConverterType === 'mass';
+                const isTemperatureInput = activeConverterType === 'temperature';
+                const isVolumeInput = activeConverterType === 'volume';
+                const key = e.key;
+                const currentValue = activeInput.value;
+                const isNumber = /[0-9]/.test(key);
+                // Note: Using comma for decimal separation based on original logic 'currentValue.includes(',')'
+                const isDecimalSeparator = (key === ',' || key === '.'); 
+                const allowedSystemKeys = ['Backspace', 'Delete', 'ArrowLeft', 'ArrowRight', 'Tab', 'Minus'];
+                const isSystemKey = e.key.length > 1 && !allowedSystemKeys.includes(key);
+                const isMinusKey = key === '-';
+                if (isSystemKey || e.ctrlKey || e.metaKey) {
+                    return;
+                }
+                if (isTemperatureInput && isMinusKey) {
+                    if (currentValue.includes('-') || activeInput.selectionStart !== 0) {
+                        e.preventDefault();
+                    }
+                } else if (isNumber || allowedSystemKeys.includes(key)) {
+                } else if (isDecimalSeparator) {
+                    if (currentValue.includes(',')) {
+                        e.preventDefault();
+                    }
+                    if (key === '.') {
+                        e.preventDefault();
+                        activeInput.value += ',';
+                    }
+                } else {
+                    e.preventDefault();
+                    return;
+                }
+                setTimeout(() => {
+                    if (isCurrencyInput) {
+                        if (window.convertFromTo && activeInput.id === 'from-currency-input') {
+                            window.convertFromTo();
+                        } else if (window.convertToFrom && activeInput.id === 'to-currency-input') {
+                            window.toFrom();
+                        }
+                    } else if (isLengthInput) {
+                        if (window.performLengthConversion && activeInput.id === 'from-length') {
+                            window.performLengthConversion();
+                        } else if (window.performLengthConversionReverse && activeInput.id === 'to-length') {
+                            window.performLengthConversionReverse();
+                        }
+                    } else if (isMassInput) {
+                        if (window.performMassConversion && activeInput.id === 'from-mass') {
+                            window.performMassConversion();
+                        } else if (window.performMassConversionReverse && activeInput.id === 'to-mass') {
+                            window.performMassConversionReverse();
+                        }
+                    } else if (isTemperatureInput) {
+                        if (window.performTemperatureConversion && activeInput.id === 'from-temperature') {
+                            window.performTemperatureConversion();
+                        } else if (window.performTemperatureConversionReverse && activeInput.id === 'to-temperature') {
+                            window.performTemperatureConversionReverse();
+                        }
+                    } else if (isVolumeInput) {
+                        if (window.performVolumeConversion && activeInput.id === 'from-volume') {
+                            window.performVolumeConversion();
+                        } else if (window.performVolumeConversionReverse && activeInput.id === 'to-volume') {
+                            window.performVolumeConversionReverse();
+                        }
+                    }
+                }, 0);
+            }
+        });
+
+        // === INITIALIZATION ===
+        const today = new Date().toISOString().split('T')[0];
+        DATE_FROM_INPUT.val(today);
+        DATE_TO_INPUT.val(today);
+        
+        showCalculatorView();
+        calculateDateDifference();
+    });
+</script>
+</html>

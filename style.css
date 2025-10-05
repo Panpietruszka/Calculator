@@ -1,0 +1,681 @@
+@import url(https://fonts.googleapis.com/css?family=Poppins:100,100italic,200,200italic,300,300italic,regular,italic,500,500italic,600,600italic,700,700italic,800,800italic,900,900italic);
+
+:root {
+    --background-light: #e8e8e8;
+    --background-dark: #212121;
+    --font-family: "Poppins";
+    --font-color-light: #fff;
+    --font-color-dark: #333;
+    --button-bg-dark: rgba(0, 0, 0, 0.4);
+    --button-bg-light: rgba(255, 255, 255, 0.4);
+    --button-bg-accent: #2c5d9a;
+    --button-size: 60px;
+    --button-gap: 15px;
+    --padding: 25px;
+    --blue-background: #4169E1;
+    --button-bg-normal: rgb(31, 165, 228);
+    --new-background: #010B13;
+    --light-blue-background: #BDD8E9;
+    --box-shadow-for-dark: 20px 20px 5px var(--button-bg-dark);
+    --box-shadow-for-light: 30px 50px 50px var(--button-bg-dark);
+    --border-light: none;
+    --border-normal: 1px solid rgba(255, 255, 255, 0.3);
+    --scientific-buttons-width: calc((var(--button-size) + var(--button-gap)) * 5 - var(--button-gap));
+    --programming-buttons-width: calc((var(--button-size) + var(--button-gap)) * 4 - var(--button-gap));
+    --normal-buttons-width: calc((var(--button-size) + var(--button-gap)) * 5 - var(--button-gap));
+    --normal-calc-width: calc(var(--normal-buttons-width) + var(--padding) * 2);
+    --scientific-calc-width: calc(var(--scientific-buttons-width) + var(--normal-buttons-width) + var(--button-gap) + var(--padding) * 2);
+    --programming-calc-width: calc(var(--programming-buttons-width) + var(--normal-buttons-width) + var(--button-gap) + var(--padding) * 3);
+    --menu-width: 350px;
+    --secondary-color: #3a3f44;
+    --text-color: #fff;
+    --primary-color: #BDD8E9;
+    --font-color-new: #7d7d7d;
+    --button-bg-new: #2e2e2e;
+    --new-body-background: #000000;
+    --box-shadow-for-new: #7d7d7d;
+    --border-new: #4b4b4b;
+}
+
+body {
+    background-color: var(--blue-background);
+    font-family: var(--font-family);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100svh;
+    margin: 0;
+    overflow: hidden;
+}
+
+h1 {
+    text-align: center;
+    padding-top: 10rem;
+    position: absolute;
+    top: 1%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: -1;
+}
+
+a {
+    text-decoration: none;
+    color: #fff;
+}
+
+main {
+    position: relative;
+}
+
+.main-content {
+    display: flex;
+    flex-direction: row-reverse;
+    background: rgba(26, 43, 45, 0.2);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    width: var(--normal-calc-width);
+    height: 480px;
+    border-radius: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.5), inset 0 -1px 0 rgba(255, 255, 255, 0.1);
+    z-index: 1;
+    overflow: hidden;
+    position: relative;
+    transition: width 0.5s cubic-bezier(0.86, 0, 0.07, 1);
+    margin: 0;
+    box-shadow: 20px 20px 5px var(--button-bg-dark);
+}
+
+.main-content.active {
+    width: calc(var(--normal-calc-width) + var(--menu-width) + 5rem);
+}
+
+.main-content.scientific-mode {
+    width: var(--scientific-calc-width);
+}
+
+.main-content.scientific-mode.active {
+    width: calc(var(--scientific-calc-width) + var(--menu-width));
+}
+
+.main-content.programming-mode {
+    width: var(--programming-calc-width);
+    padding-right: 2.5rem;
+}
+
+.main-content.programming-mode.active {
+    width: calc(var(--programming-calc-width) + var(--menu-width));
+    padding-right: 3rem;
+}
+
+.menu-panel {
+    /* width: var(--menu-width); */
+    width: 60%;
+    flex-shrink: 0;
+    transform: translateX(100%);
+    opacity: 0;
+    pointer-events: none;
+    overflow: hidden;
+    padding: 0;
+    position: relative;
+    transition: transform 0.5s cubic-bezier(0.86, 0, 0.07, 1), opacity 0.5s cubic-bezier(0.86, 0, 0.07, 1);
+    color: var(--font-color-light);
+    display: flex; /* Used for centering active panels */
+    flex-direction: column;
+}
+
+.menu-panel.active {
+    transform: translateX(0);
+    opacity: 1;
+    pointer-events: auto;
+}
+
+/* --- REVISED STYLES FOR MENU PANELS --- */
+
+.menu-content,
+.history-content,
+.converters-content {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    padding-top: 6rem;
+    box-sizing: border-box;
+    transition: opacity 0.5s cubic-bezier(0.86, 0, 0.07, 1);
+    
+    /* We hide using opacity/pointer-events so that Smooth Scrollbar can initialize */
+    opacity: 0;
+    pointer-events: none;
+    display: flex; 
+}
+
+/* Active panel */
+.menu-content.active-panel,
+.history-content.active-panel,
+.converters-content.active-panel {
+    opacity: 1;
+    pointer-events: auto;
+    position: relative;
+    /* 🔑 KEY: Ensure the active panel takes up the full available height */
+    height: 100%; 
+}
+
+/* Maintain specific styles for history-content layout */
+.history-content {
+    /* 🔑 KEY CHANGE: Enable Flexbox */
+    display: flex; 
+    flex-direction: column;
+    padding: 20px;
+    padding-top: 3rem; /* Overwrites the default padding-top from above for better fit */
+}
+
+/* --- END OF REVISED STYLES FOR MENU PANELS --- */
+
+.menu-content h3,
+.converters-content h4 {
+    margin-top: 1rem;
+    margin-left: 2rem;
+}
+.menu-content h3 {
+    transform: translateX(9rem) translateY(-2rem);
+}
+.calculator-body {
+    width: var(--normal-calc-width);
+    flex-shrink: 0;
+    transition: width 0.5s cubic-bezier(0.86, 0, 0.07, 1);
+    padding: var(--padding);
+    box-sizing: border-box;
+    display: grid;
+    grid-template-rows: 20% 1fr;
+}
+
+.calculator-body.scientific-mode {
+    width: var(--scientific-calc-width);
+}
+
+.calculator-body.programming-mode {
+    width: var(--programming-calc-width);
+}
+
+.calculator-body.section-visible {
+    display: grid;
+}
+
+.converter-mode-body.section-visible {
+    display: flex;
+}
+
+/* Use a general rule for hiding, but ensure it's not display: none forcefully */
+.calculator-body:not(.section-visible),
+.converter-mode-body:not(.section-visible),
+.date-calculator-body:not(.section-visible) {
+    display: none !important;
+}
+
+#input {
+    width: 100%;
+    text-align: right;
+    font-size: 2.5rem;
+    background-color: transparent;
+    color: white;
+    border: none;
+    outline: none;
+    box-sizing: border-box;
+    padding: 25px 25px;
+    word-break: break-all;
+}
+
+#input::placeholder {
+    color: white;
+    opacity: 1;
+}
+
+#result {
+    width: 100%;
+    text-align: right;
+    font-size: 2rem;
+    color: var(--font-color-light);
+    padding: 10px 0px;
+    transform: translateY(-1rem) translateX(-1rem);
+    opacity: 0.5;
+    word-break: break-all;
+}
+
+.buttons-container {
+    display: flex;
+    flex-direction: row-reverse;
+    gap: var(--button-gap);
+    height: 380px;
+    transition: transform 0.5s cubic-bezier(0.86, 0, 0.07, 1);
+}
+
+.scientific-buttons,
+.programming-buttons {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    gap: var(--button-gap);
+    width: 0;
+    opacity: 0;
+    pointer-events: none;
+    transition: width 0.5s cubic-bezier(0.86, 0, 0.07, 1), opacity 0.5s cubic-bezier(0.86, 0, 0.07, 1);
+    flex-shrink: 0;
+    overflow: hidden;
+    height: 90%;
+    justify-content: flex-start;
+    align-content: flex-start;
+}
+
+.normal-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: var(--button-gap);
+    width: var(--normal-buttons-width);
+    transition: width 0.5s cubic-bezier(0.86, 0, 0.07, 1);
+}
+
+.calculator-body.scientific-mode .scientific-buttons {
+    width: var(--scientific-buttons-width);
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.calculator-body.scientific-mode .normal-buttons {
+    margin-right: var(--button-gap);
+}
+
+.calculator-body.programming-mode .programming-buttons {
+    width: var(--programming-buttons-width);
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.calculator-body.programming-mode .normal-buttons {
+    margin-right: var(--button-gap);
+}
+
+.normal-buttons .row,
+.scientific-buttons .row,
+.programming-buttons .row {
+    display: flex;
+    gap: var(--button-gap);
+    justify-content: space-between;
+}
+
+.buttons-container button {
+    height: var(--button-size);
+    font-size: 1.4rem;
+    border: none;
+    outline: none;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    white-space: nowrap;
+    box-sizing: border-box;
+}
+
+.normal-buttons .row button {
+    width: var(--button-size);
+}
+
+.scientific-buttons button,
+.programming-buttons button {
+    width: var(--button-size);
+}
+
+.normal-buttons .row:last-child button:nth-child(2) {
+    width: var(--button-size);
+}
+
+.number-button {
+    background: var(--button-bg-dark);
+    color: var(--font-color-light);
+}
+
+.special-button {
+    background-color: var(--button-bg-light);
+    color: var(--font-color-light);
+}
+
+.special-button.active-mode {
+    background-color: var(--button-bg-accent);
+}
+
+.equals-button {
+    background-color: var(--button-bg-accent);
+    color: var(--font-color-light);
+}
+
+.main-content::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.8), transparent);
+}
+
+.hamburger-menu {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    z-index: 3;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.hamburger-icon,
+.back-icon {
+    cursor: pointer;
+    padding: 10px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    transition: opacity 0.3s, visibility 0.3s;
+}
+
+.back-icon {
+    opacity: 0;
+    visibility: hidden;
+}
+
+.hamburger-icon {
+    opacity: 1;
+    visibility: visible;
+}
+
+.main-content.scientific-mode .back-icon,
+.main-content.programming-mode .back-icon,
+.main-content.active .back-icon,
+.main-content.converter-mode .back-icon {
+    opacity: 1;
+    visibility: visible;
+}
+
+.main-content.scientific-mode .hamburger-icon,
+.main-content.programming-mode .hamburger-icon,
+.main-content.active .hamburger-icon,
+.main-content.converter-mode .hamburger-icon {
+    opacity: 0;
+    visibility: hidden;
+}
+
+.hamburger-icon span {
+    display: block;
+    width: 25px;
+    height: 3px;
+    background: var(--font-color-light);
+    margin: 5px 0;
+    transition: 0.4s;
+    border-radius: 3px;
+    transition: width 0.2s ease-out, transform 0.3s ease-out;
+}
+
+.hamburger-icon.clicked span {
+    transform: scaleX(0.3) scaleY(0.9);
+}
+
+.menu-items {
+    list-style: none;
+    display: inline-block;
+    transform: translateX(-4rem) translateY(2.5rem);
+    overflow-y: auto;
+    height: 100%;
+    box-sizing: border-box;
+    width: 100%;
+}
+
+.menu-items li:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+.menu-items li img,
+.menu-items li i {
+    width: 25px;
+    height: 25px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    color: #fff;
+}
+
+.menu-items li {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    white-space: nowrap;
+    padding: 10px 15px;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    cursor: pointer;
+    transition: background-color 0.2s ease-in-out;
+    width: 15rem;
+}
+
+.menu-items li a {
+    color: var(--font-color-light);
+    text-decoration: none;
+    margin-left: 0;
+    width: 15rem;
+}
+
+/* --- Calculation History Section --- */
+.history-title {
+    text-align: center;
+    margin-top: 0;
+}
+
+.history-list-container {
+    /* 🔑 KEY: Fills the vertical space in .history-content (which is now flex) */
+    flex-grow: 1;
+    padding-right: 15px;
+    /* Force 100% height in the flex context so Smooth Scrollbar knows the boundaries */
+    height: 100%;
+    min-height: 0; /* Allows shrinking in flexbox */
+    overflow-y: hidden; /* Scroll control via Smooth Scrollbar */
+    transform: translateY(-1rem);
+}
+
+/* Hiding the default smooth-scrollbar scrollbar (Webkit and Firefox bars are removed in a separate block below, if defined) */
+.history-list-container .scrollbar-track {
+    display: none !important;
+}
+
+#history-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+#history-list li {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    padding: 10px 15px;
+    margin-bottom: 10px;
+    transition: all 0.35s ease-in-out;
+    opacity: 0;
+    transform: scale(0.7);
+}
+
+#history-list li.item-focus,
+#history-list li.item-next {
+    opacity: 1;
+    transform: scale(1);
+}
+
+#history-list li.item-hide {
+    opacity: 0;
+    transform: scale(0.7);
+}
+
+#history-list li .expression {
+    font-size: 1.2rem;
+    color: rgba(255, 255, 255, 0.8);
+    word-break: break-all;
+}
+
+#history-list li .result {
+    font-size: 1.5rem;
+    font-weight: bold;
+    word-break: break-all;
+}
+
+#clear-history-btn {
+    margin-top: 20px;
+    background: var(--button-bg-accent);
+    color: var(--font-color-light);
+    font-size: 1.2rem;
+    border-radius: 10px;
+    cursor: pointer;
+    height: 4rem;
+    width: 200px;
+    padding: 15px 20px;
+    align-self: center;
+    flex-shrink: 0; /* Prevents button from shrinking */
+    border: none;
+    outline: none;
+    transform: translateX(1rem);
+}
+/* --- End of Calculation History Section --- */
+
+
+/* Converter: Menu Section */
+.converter-content {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    padding-top: 6rem;
+    box-sizing: border-box;
+    transition: opacity 0.5s cubic-bezier(0.86, 0, 0.07, 1);
+    display: flex;
+    flex-direction: column;
+    color: var(--font-color-light);
+    padding: 20px;
+    opacity: 0; 
+    pointer-events: none;
+}
+
+.converter-content.active-panel {
+    opacity: 1;
+    pointer-events: auto;
+    position: relative;
+}
+
+.converters-title {
+    text-align: center;
+    transform: translateY(2rem);
+    margin-bottom: 0;
+    margin-top: 2rem;
+}
+
+.converters-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    transform: translateY(4rem) translateX(7rem);
+    display: inline-block;
+    margin-top: 2rem;
+}
+
+.converters-list li {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    white-space: nowrap;
+    padding: 10px 15px;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    cursor: pointer;
+    transition: background-color 0.2s ease-in-out;
+}
+
+.converters-list li:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+.converters-list li a {
+    color: var(--font-color-light);
+    text-decoration: none;
+}
+
+/* Converter: Main Section */
+.converter-mode-body {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    padding: var(--padding);
+    box-sizing: border-box;
+    flex-direction: column;
+}
+
+.converter-mode-body.section-visible {
+    display: flex;
+}
+
+/* Other converter-specific rules (from przeliczniki.css) */
+
+.converter-currency-container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    width: 100%;
+    max-width: 400px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.currency-group {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background-color: var(--secondary-color);
+    padding: 10px;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.currency-select {
+    border: none;
+    background-color: transparent;
+    color: var(--text-color);
+    font-size: 1em;
+    padding: 5px;
+    cursor: pointer;
+    border-left: 1px solid var(--primary-color);
+}
+
+.currency-select option {
+    background-color: var(--secondary-color);
+    color: var(--text-color);
+}
+
+/* Visibility switching rules (modified for consistency) */
+
+.section-visible {
+    display: grid !important; 
+}
+
+.section-visible.converter-mode-body {
+    display: flex !important;
+}
+
+.section-hidden {
+    display: none !important;
+}
+.menu-items.scientific-active {
+    transform: translateX(11rem) translateY(2rem);
+}
+.menu-content.scientific-active h3 {
+    transform: translateX(24rem) translateY(-2rem);
+}
+.menu-content.programming-active {
+    transform: translateX(15rem);
+}

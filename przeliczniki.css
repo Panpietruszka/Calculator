@@ -1,0 +1,222 @@
+/* przeliczniki.css */
+
+.converter-section h3 {
+    position: absolute;
+    color: var(--font-color-light);
+    left: 50%;
+    top: 1%;
+    transform: translate(-50%, -1%);
+}
+
+/* ZModyfikowane style dla lepszego układu w konwerterze */
+.converter-inputs {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Wyśrodkowanie elementów w kolumnie */
+    position: absolute; /* Zachowane pozycjonowanie z oryginalnego kodu */
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 90%; /* Ograniczenie szerokości */
+}
+
+.input-group {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.input-group input {
+    width: 15rem; /* Dostosowane do szerokości Custom Select */
+    transform: translateY(0);
+    border: 2px solid white;
+    background-color: transparent;
+    padding: 10px;
+    border-radius: 10px;
+    font-size: 1.2em;
+    margin-bottom: 1rem; /* Zmniejszone marginesy */
+    color: var(--font-color-light);
+}
+
+.input-group input::-webkit-outer-spin-button,
+.input-group input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+input[type=number] {
+    -moz-appearance: textfield;
+}
+
+.swap-icon-container {
+    margin: 1rem 0; /* Dodane marginesy dla ikonki zamiany */
+}
+
+.swap-icon i {
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* ---------------------------------------------------------------------- */
+/* STYLE DLA CUSTOM SELECTA (zastępują standardowe selecty)               */
+/* ---------------------------------------------------------------------- */
+.custom-select {
+    position: relative;
+    width: 15rem; /* Dostosowanie do szerokości inputa */
+    margin-bottom: 2rem;
+}
+
+.select-selected, .select-items div {
+    background-color: transparent;
+    color: var(--font-color-light);
+    padding: 10px 15px;
+    cursor: pointer;
+    border-radius: 6px;
+    border: 1px solid var(--font-color-light);
+    user-select: none;
+    font-size: 1em;
+}
+
+.select-selected:hover {
+    border-color: #aaa;
+}
+
+.select-items {
+    position: absolute;
+    background-color: var(--new-background);
+    border: 1px solid var(--font-color-light);
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    border-radius: 6px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); /* Zmieniony cień dla ogólnego wyglądu */
+    overflow-y: auto;
+    /* Dodaj te 2 linie, aby wyzerować domyślne pozycjonowanie dla customizacji */
+    top: auto; 
+    bottom: auto;
+}
+.select-opens-down .select-items {
+    top: calc(100% + 5px);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+.select-opens-up .select-items {
+    bottom: calc(100% + 5px);
+    box-shadow: 0 -4px 10px rgba(0, 0, 0, 0.3);
+}
+.select-items div:hover {
+    background-color: rgba(255, 255, 255, 0.1); /* Delikatny hover w trybie ciemnym */
+}
+
+.select-hide {
+    display: none;
+}
+
+/* Style dla przewijania (Scrollbar) - dostosowane do ciemnego motywu */
+.select-items::-webkit-scrollbar {
+    width: 8px;
+}
+.select-items::-webkit-scrollbar-thumb {
+    background-color: #666; /* Ciemniejszy kolor thumb */
+    border-radius: 4px;
+}
+.select-items::-webkit-scrollbar-track {
+    background-color: #333; /* Ciemniejszy kolor tła scrolla */
+}
+/* W pliku przeliczniki.css (lub style-2.0.css) */
+
+.converter-list-body {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
+    max-width: 350px; /* Dostosuj do szerokości Twojego interfejsu */
+    padding: 20px;
+    box-sizing: border-box;
+    text-align: center;
+    display: none; /* Domyślnie ukryte */
+}
+
+.converter-list-body h3 {
+    font-size: 1.8em;
+    margin-bottom: 40px;
+    color: var(--text-color); /* lub jaki masz kolor tekstu */
+}
+
+.main-converters-list {
+    list-style: none;
+    padding: 0;
+}
+
+.main-converters-list li {
+    margin-bottom: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.main-converters-list a {
+    display: block;
+    padding: 15px 0;
+    text-decoration: none;
+    color: var(--text-color);
+    font-size: 1.1em;
+    transition: background-color 0.2s;
+}
+
+.main-converters-list a:hover {
+    background-color: rgba(255, 255, 255, 0.05);
+}
+
+/* Upewnij się, że .converter-mode-body i .converter-list-body 
+   są ukryte, gdy nie mają klasy section-visible */
+.calculator-body:not(.section-visible),
+.converter-mode-body:not(.section-visible),
+.converter-list-body:not(.section-visible) {
+    display: none;
+}
+.calculator-body.section-visible,
+.converter-mode-body.section-visible,
+.converter-list-body.section-visible {
+    display: block;
+}
+
+/* Sekcja druga LENGTH - zamiana wartości długości */
+.other-converter-inputs {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: absolute;
+    top: 60%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 90%;
+}
+.length-input-group {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+#custom-from-length-select, #custom-to-length-select {
+    margin-top: 20px;
+}
+.length-input-group input {
+    border: none;
+    transform: translateY(0);
+    outline: none;
+    border-radius: 15px;
+    padding: 1em;
+    background-color: #ccc;
+    box-shadow: inset 2px 5px 10px rgba(0, 0, 0, 0.3);
+    transition: 300ms ease-in-out;
+}
+.length-input-group input:focus {
+    background-color: white;
+    transform: scale(1.05);
+    box-shadow: 13px 13px 100px #969696,
+                -2px -2px 20px #ffffff5d;
+}
+#custom-from-currency-select-mass, #custom-to-currency-select-mass {
+    margin-top: 20px;
+}

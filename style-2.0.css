@@ -1,0 +1,75 @@
+/* style-2.0.cs */
+
+.container {
+    position: absolute;
+    bottom: 1.5%;
+    left: 50%;
+    transform: translateX(-50%);
+}
+.radio-input input {
+    display: none;
+}
+
+.radio-input {
+    --container_width: 300px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    border-radius: 3rem;
+    background-color: rgba(5, 68, 141, 0.15);
+    color: #d3d3d3;
+    width: var(--container_width);
+    overflow: hidden;
+    border: none;
+}
+
+.radio-input label {
+    width: 100%;
+    padding: 5px;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1;
+    font-weight: 600;
+    letter-spacing: -1px;
+    font-size: 14px;
+}
+
+.selection {
+    display: none;
+    position: absolute;
+    height: 100%;
+    top: 50%;
+    left: 50%;
+    width: calc(var(--container_width) / 4);
+    z-index: 0;
+    left: 0;
+    top: 0;
+    transition: .15s ease;
+    border-radius: 3rem;
+}
+
+.radio-input label:has(input:checked) {
+    color: #fff;
+}
+
+.radio-input label:has(input:checked) ~.selection {
+    background-color: rgb(31, 165, 228);
+    display: inline-block;
+}
+
+.radio-input label:nth-child(1):has(input:checked)~.selection {
+    transform: translateX(calc(var(--container_width) * 0/4));
+}
+
+.radio-input label:nth-child(2):has(input:checked)~.selection {
+    transform: translateX(calc(var(--container_width) * 1/4));
+}
+
+.radio-input label:nth-child(3):has(input:checked)~.selection {
+    transform: translateX(calc(var(--container_width) * 2/4));
+}
+.radio-input label:nth-child(4):has(input:checked)~.selection {
+    transform: translateX(calc(var(--container_width) * 3/4));
+}

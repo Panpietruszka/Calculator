@@ -1,0 +1,50 @@
+.date-calculator-body {
+    color: var(--font-color-light);
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+.date-same-dates-message {
+    position: absolute;
+    top: 90%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+.input-group input[type="date"]::-webkit-calendar-picker-indicator {
+  /* Usuwa domyślny wygląd ikony, aby ułatwić modyfikację */
+  appearance: none;
+  /* Kursor na dłoń/kliknięcie */
+  cursor: pointer;
+  /* Zmienia ikonę na białą. Invert(1) odwraca kolory (czarny staje się biały). */
+  filter: invert(1);
+  /* Opcjonalnie: Zmień kolor tła ikony, co może sprawić, że będzie lepiej widoczna */
+  /* background-color: blue; */ 
+}
+
+/* Opcjonalnie, aby ikona była bardziej widoczna na jasnym tle */
+input[type="date"] {
+  color-scheme: light; /* Wpływa na wygląd kalendarza w niektórych przeglądarkach */
+}
+.date-detailed-results, #current-result {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    white-space: nowrap;
+}
+.date-detailed-results {
+    top: 90%;
+}
+#current-result {
+    top: 80%;
+    display: flex;
+    flex-direction: column;
+    gap: 0px;
+    margin: 0;
+    padding: 0;
+}
+#date-result-value {
+    transform: translateY(-20px);
+}

@@ -1,0 +1,189 @@
+/* ========================================================= */
+/* === STYLES DLA TRYBU KALKULATORA PROGRAMISTYCZNEGO (PRO) === */
+/* ========================================================= */
+
+:root {
+    /* Nadpisanie kolorów dla trybu programisty, jeśli chcemy innego wyglądu */
+    --pro-background: #0D1117; /* Ciemny, developerski kolor tła */
+    --pro-text-color: #E6EDF3;
+    --pro-button-default: #21262D; /* Standardowy przycisk */
+    --pro-button-number: #161B22; /* Przyciski numeryczne */
+    --pro-button-operator: #30363D; /* Operatory */
+    --pro-button-accent: #2c5d9a; /* Akcent dla = */
+    --pro-border: 1px solid #30363D;
+    --pro-mode-active: #2c5d9a; /* Aktywny tryb konwersji */
+}
+
+/* 1. Globalne zmiany w trybie programisty */
+.main-content.programming-mode {
+    width: var(--scientific-calc-width); /* Użycie tej samej szerokości co Scientific */
+}
+
+.calculator-body.programming-mode {
+    background-color: var(--pro-background);
+    padding: var(--padding);
+    /* Zmieniamy układ na siatkę z dodatkowym rzędem na wyświetlacz i sekcję konwersji */
+    grid-template-rows: 20% 15% 1fr;
+    gap: 0;
+    transition: all 0.5s ease;
+}
+
+/* 2. Układ przycisków */
+.calculator-body.programming-mode .buttons-container {
+    height: auto;
+    flex-direction: row; /* Zmieniamy kierunek, by Scientific był z lewej */
+}
+
+/* Przyciski programisty (lewa kolumna) */
+.programming-buttons {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    gap: var(--button-gap);
+    width: 0;
+    opacity: 0;
+    pointer-events: none;
+    transition: width 0.5s cubic-bezier(0.86, 0, 0.07, 1), opacity 0.5s cubic-bezier(0.86, 0, 0.07, 1);
+    flex-shrink: 0;
+    overflow: hidden;
+    height: 100%;
+    justify-content: flex-start;
+    align-content: flex-start;
+}
+
+.calculator-body.programming-mode .programming-buttons {
+    width: var(--scientific-buttons-width);
+    opacity: 1;
+    pointer-events: auto;
+    margin-right: var(--button-gap);
+}
+
+.calculator-body.programming-mode .scientific-buttons {
+    /* Ukrywamy oryginalne przyciski naukowe w trybie programisty */
+    display: none !important; 
+    width: 0;
+    opacity: 0;
+}
+
+/* 3. Style przycisków */
+.programming-buttons .row,
+.programming-buttons .row-hex {
+    display: flex;
+    gap: var(--button-gap);
+    justify-content: space-between;
+}
+
+.programming-buttons .row button {
+    width: var(--button-size);
+}
+
+.programming-buttons button {
+    height: var(--button-size);
+    font-size: 1rem;
+    color: var(--pro-text-color);
+    background-color: var(--pro-button-default);
+    border: var(--pro-border);
+}
+
+/* Przyciski HEX (A-F) */
+.programming-buttons .row-hex button {
+    background-color: var(--pro-button-number);
+    color: var(--pro-text-color);
+    font-size: 1.2rem;
+    opacity: 0.5; /* Domyślnie nieaktywne (tylko w DEC, OCT, BIN) */
+}
+
+.programming-buttons .row-hex button.active-hex {
+    opacity: 1; /* Aktywne w trybie HEX */
+}
+
+/* Operatory programisty (np. bitowe) */
+.programming-buttons button[data-fn]:not(.row-hex button) {
+    background-color: var(--pro-button-operator);
+}
+
+/* 4. Sekcja konwersji (HEX/DEC/OCT/BIN) */
+.pro-conversions {
+    display: none;
+    flex-direction: column;
+    padding: 0 var(--padding);
+    padding-bottom: 10px;
+    gap: 8px;
+    border-bottom: var(--pro-border);
+}
+
+.calculator-body.programming-mode .pro-conversions {
+    display: flex;
+}
+
+.conversion-mode-selector {
+    display: flex;
+    justify-content: space-between;
+}
+
+.conversion-mode-selector button {
+    flex: 1;
+    padding: 5px;
+    background: transparent;
+    color: var(--pro-text-color);
+    border: none;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: color 0.2s, border-bottom 0.2s;
+    border-bottom: 2px solid transparent;
+}
+
+.conversion-mode-selector button.active {
+    color: var(--pro-mode-active);
+    border-bottom: 2px solid var(--pro-mode-active);
+    font-weight: bold;
+}
+
+.conversion-display-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: var(--pro-text-color);
+    font-size: 0.9rem;
+}
+
+.conversion-display-row span:first-child {
+    font-weight: bold;
+    width: 40px;
+}
+
+.conversion-display-row span:last-child {
+    flex-grow: 1;
+    text-align: right;
+    font-family: monospace;
+    font-size: 1.1rem;
+    opacity: 0.8;
+}
+
+/* 5. Modyfikacja wyświetlacza dla trybu PRO */
+.calculator-body.programming-mode #input {
+    font-size: 2.2rem;
+    color: var(--pro-text-color);
+    padding-top: 15px; /* Mniejszy padding, by zmieściło się więcej */
+    padding-bottom: 5px;
+    grid-row: 1; /* Ustawienie input w pierwszym rzędzie */
+}
+
+.calculator-body.programming-mode #result {
+    display: none; /* Ukrywamy pole result w trybie programisty, używamy pro-conversions */
+}
+
+/* 6. Modyfikacje dla normalnych przycisków w trybie PRO */
+.calculator-body.programming-mode .normal-buttons button {
+    background-color: var(--pro-button-operator);
+    color: var(--pro-text-color);
+    border: var(--pro-border);
+}
+
+.calculator-body.programming-mode .number-button {
+    background-color: var(--pro-button-number);
+}
+
+.calculator-body.programming-mode .equals-button {
+    background-color: var(--pro-button-accent);
+}
