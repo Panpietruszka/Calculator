@@ -72,7 +72,7 @@
     }
     .calculator-body.programming-mode {
         max-height: 60vh;
-        min-width: 500px;
+        min-width: 300px;
     }
     .calculator-body.scientific-mode {
         max-height: 60vh;
@@ -556,4 +556,5 @@
     .menu-content.programming-active {
         transform: translateX(-2rem);
     }
+
 }
