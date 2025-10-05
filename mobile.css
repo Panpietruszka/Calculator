@@ -1,11 +1,15 @@
 @media (max-width: 700px) {
+    /* ========================================================= */
+    /* GLOBALNE POPRAWKI I MAIN-CONTENT */
+    /* ========================================================= */
     body {
-        overflow-y: auto;
-        min-height: 100vh; 
-        min-height: 100svh;
+        /* POPRAWKA: Używamy tylko 100svh dla stabilności wysokości (Small Viewport Height) */
+        min-height: 100svh; 
         padding-top: 20px;
         padding-bottom: 20px;
-        overflow-y: hidden; /* Added: Hides vertical scrollbar, relies on min-height */
+        /* POPRAWKA: Usunięcie auto, zostawienie tylko hidden, aby zapobiec niechcianemu przewijaniu */
+        overflow-y: hidden; 
+        overflow-x: hidden; /* Dodane, aby zapobiec przewijaniu poziomemu */
     }
 
     h1 {
@@ -14,14 +18,15 @@
     .main-content {
         width: 100% !important; 
         max-width: 500px;
-        height: auto; /* Adjusted for mobile */
-        min-height: 85vh; /* Adjusted for mobile */
+        height: auto; 
+        /* POPRAWKA: Zmiana vh na svh dla stabilności */
+        min-height: 85svh; 
         flex-direction: column; 
         margin: 0 auto;
-        border-radius: 10px; /* Adjusted for mobile */
-        box-shadow: none; /* Adjusted for mobile */
-        transition: none; /* Adjusted for mobile */
-        transform: translateY(-2rem);
+        border-radius: 10px; 
+        box-shadow: none; 
+        transition: none; 
+        transform: translateY(-1rem); /* Minimalne przesunięcie w górę */
         padding: 0;
     }
 
@@ -31,9 +36,10 @@
     .main-content.programming-mode,
     .main-content.programming-mode.active {
         width: 100%; 
-        padding-right: 15px;
+        padding-right: 0; /* POPRAWKA: Usunięto zbędny padding-right */
     }
 
+    /* Menu Panel - Pozostawione bez zmian */
     .menu-panel {
         width: 100%;
         position: absolute;
@@ -41,7 +47,7 @@
         left: 0;
         height: 100%;
         min-height: 100%;
-        transform: translateY(100%); /* Hides the panel below the screen */
+        transform: translateY(100%); 
         transition: transform 0.5s cubic-bezier(0.86, 0, 0.07, 1);
         z-index: 10;
         background: rgba(26, 43, 45, 0.95);
@@ -67,15 +73,17 @@
         width: 100% !important;
         padding: 15px; 
         grid-template-rows: 15% 1fr;
-        height: auto; /* Adjusted for mobile */
-        min-height: 80vh; /* Adjusted for mobile */
+        height: auto; 
+        /* POPRAWKA: Zmiana vh na svh dla stabilności */
+        min-height: 80svh; 
     }
     .calculator-body.programming-mode {
-        max-height: 60vh;
-        min-width: 300px;
+        /* POPRAWKA: USUNIĘCIE min-width: 400px; które psuło responsywność */
+        max-height: 85svh; /* Zmienione z 60vh */
+        min-width: unset; 
     }
     .calculator-body.scientific-mode {
-        max-height: 60vh;
+        max-height: 85svh; /* Zmienione z 60vh */
     }
     #input {
         font-size: 2rem; 
@@ -89,15 +97,15 @@
     /* --- BUTTONS AND LAYOUT --- */
 
     .buttons-container {
-        flex-direction: column; /* Stacks button groups vertically */
-        height: auto; /* Auto height */
+        flex-direction: column; 
+        height: auto; 
         gap: 10px;
     }
 
-    /* Reduce width of scientific/programming buttons (Variable redefinition for mobile) */
+    /* Zmienne ( :root ) - Pozostawione bez zmian */
     :root {
-        --button-size: 65px; /* Smaller button size */
-        --button-gap: 5px; /* Smaller gap */
+        --button-size: 65px; 
+        --button-gap: 5px; 
         --scientific-buttons-width: 100%; 
         --programming-buttons-width: 100%;
         --normal-buttons-width: 100%;
@@ -110,24 +118,23 @@
     .normal-buttons,
     .scientific-buttons,
     .programming-buttons {
-        width: auto; /* Auto width */
-        opacity: 1; /* Default visible */
+        width: auto; 
+        opacity: 1; 
         pointer-events: auto;
         flex-direction: column; 
         height: auto; 
-        margin-right: 0 !important; /* Remove right margin */
+        margin-right: 0 !important; 
         gap: var(--button-gap);
         
-        display: flex; /* Initially set to flex for control */
-        max-height: 0; /* Hides the content for animation */
+        display: flex; 
+        max-height: 0; 
         margin-bottom: 0;
         overflow: hidden;
         transition: max-height 0.5s ease-in-out, opacity 0.5s ease-in-out;
     }
     
-    /* Normal buttons are ALWAYS visible in mobile mode! (FIX) */
     .calculator-body .normal-buttons {
-        max-height: 100vh; /* Always visible */
+        max-height: 100vh; 
         opacity: 1; 
     }
 
@@ -141,20 +148,20 @@
     }
 
     .calculator-body.scientific-mode .scientific-buttons {
-        order: 1; /* Show scientific buttons first */
+        order: 1; 
         width: 100%;
-        flex-direction: row; /* Arranged in a row at the top */
-        max-height: 500px; /* Shows the content */
+        flex-direction: row; 
+        max-height: 500px; 
         margin-bottom: var(--button-gap);
         opacity: 1;
         pointer-events: auto;
         transform: none;
     }
     #magic-trick {
-        display: none; /* Hide the magic trick element */
+        display: none; 
     }
     .calculator-body.scientific-mode .normal-buttons {
-        order: 2; /* Normal buttons below scientific buttons */
+        order: 2; 
         width: 100%;
         height: auto;
         flex-direction: column;
@@ -169,31 +176,67 @@
         width: 100%;
     }
 
-    /* Show programming buttons (This block remained unchanged from original Polish) */
+    /* POPRAWKA: Układ trybu programisty (Programming Mode) */
     .calculator-body.programming-mode .programming-buttons {
+        order: 1; /* Pokaż programistyczne przyciski nad normalnymi */
         max-height: 500px; 
         margin-bottom: var(--button-gap);
         opacity: 1;
         pointer-events: auto;
+        /* Ważne: Zmieniamy na 6 kolumn dla liter i operacji bitowych */
+        display: grid; 
+        grid-template-columns: repeat(6, 1fr); /* POPRAWKA: Zmieniono 2fr na 1fr */
+        gap: var(--button-gap); /* Zapewnienie odstępów */
+        width: 100%;
     }
     
+    /* POPRAWKA: Ustawienie normalnych przycisków na dole w 4-kolumnowej siatce */
+    .calculator-body.programming-mode .normal-buttons {
+        order: 2;
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: var(--button-gap);
+        width: 100%;
+        max-height: 100vh;
+        opacity: 1;
+        pointer-events: auto;
+    }
+    
+    /* Ukrycie sekcji scientific w trybie programming */
+    .calculator-body.programming-mode .scientific-buttons {
+        display: none !important; 
+        width: 0;
+        opacity: 0;
+    }
+    
+    /* Wspólne dla rzędów */
     .normal-buttons .row,
-    .scientific-buttons .row,
-    .programming-buttons .row {
+    .scientific-buttons .row {
         width: 100%;
         gap: var(--button-gap);
-        flex-wrap: wrap; /* Allows buttons to wrap to the next line */
-        justify-content: space-between; /* Distributes space between buttons */
+        flex-wrap: wrap; 
+        justify-content: space-between; 
     }
     
+    /* Specjalne rzędy w trybie programisty - włączanie przycisków do siatki */
+    .programming-buttons .row,
+    .programming-buttons .row-hex {
+        display: contents; 
+    }
+
+    /* Wymiary przycisków */
     .buttons-container button {
-        flex-grow: 1; /* Buttons grow to fill space */
+        flex-grow: 1; 
         min-width: var(--button-size);
         height: var(--button-size); 
         border-radius: 15px; 
         font-size: 1rem; 
     }
 
+    /* Specjalna obsługa '0' w trybie normalnym */
+    .normal-buttons .row:last-child {
+        display: flex; /* Powrót do flex dla ostatniego rzędu */
+    }
     .normal-buttons .row:last-child button:nth-child(2) {
         width: auto;
         flex-grow: 1;
@@ -224,10 +267,10 @@
     }
     
     .history-list-container {
-        padding-right: 0; /* Remove right padding */
-        transform: none; /* Remove transform */
-        overflow-y: auto; /* Enable native scrollbar for history list (if custom scrollbar fails) */
-        width: 10rem;
+        padding-right: 0; 
+        transform: none; 
+        overflow-y: auto; 
+        width: 100%; /* POPRAWKA: Ustawienie na 100% zamiast sztywnego 10rem */
     }
     
     #clear-history-btn {
@@ -235,18 +278,15 @@
         height: 3rem; 
         margin-top: 10px;
     }
-    /* --- CONVERTERS (This block remained unchanged) --- */
-
+    /* --- CONVERTERS --- */
     .converter-currency-container {
         width: 100%; 
         max-width: none;
     }
-}
-/* ========================================================= */
-/* mobile.css - Styles for mode switch (.radio-input) - Unchanged */
-/* ========================================================= */
-@media (max-width: 700px) {
     
+    /* ========================================================= */
+    /* Styles for mode switch (.radio-input) - Bez zmian */
+    /* ========================================================= */
     .container {
         position: relative; 
         bottom: auto; 
@@ -292,11 +332,10 @@
     .radio-input label:nth-child(4):has(input:checked)~.selection {
         transform: translateX(calc(var(--container_width) * 3/4));
     }
-}
-/* ========================================================= */
-/* mobile.css - Styles for Converter sections (.converter-section) - Unchanged */
-/* ========================================================= */
-@media (max-width: 700px) {
+    
+    /* ========================================================= */
+    /* Styles for Converter sections (.converter-section) */
+    /* ========================================================= */
 
     .converter-inputs,
     .other-converter-inputs {
@@ -371,7 +410,8 @@
         display: flex !important; 
         position: relative; 
         padding: 15px;
-        width: 30rem;
+        /* POPRAWKA: Zmieniono sztywne 30rem na 100% */
+        width: 100%; 
         flex-direction: column;
         align-items: center;
         justify-content: center;
@@ -383,7 +423,8 @@
         display: flex !important; 
         flex-direction: column; 
         .converter-inputs {
-            transform: translateY(4rem) translateX(-14rem);
+            /* POPRAWKA: Usunięcie sztywnego, błędnego transform */
+            transform: none;
         }
     }
 
@@ -395,11 +436,9 @@
         margin: 10px auto;
     }
 
-}
-/* ========================================================= */
-/* mobile.css - Styles for mobile devices (phones) - Programming Mode - Unchanged */
-/* ========================================================= */
-@media (max-width: 700px) {
+    /* ========================================================= */
+    /* Styles for mobile devices (phones) - Programming Mode */
+    /* ========================================================= */
     
     .main-content.programming-mode {
         padding-right: 0; 
@@ -408,11 +447,11 @@
     .calculator-body.programming-mode {
         grid-template-rows: auto auto 1fr; 
         height: auto; 
-        min-height: 80vh; 
+        min-height: 80svh; /* Zmienione na svh */
         padding: 10px; 
     }
     
-    /* --- CONVERSION SECTION (HEX/DEC/OCT/BIN) - Unchanged --- */
+    /* --- CONVERSION SECTION (HEX/DEC/OCT/BIN) --- */
 
     .pro-conversions {
         padding: 5px 0; 
@@ -433,7 +472,7 @@
         font-size: 1em; 
     }
     
-    /* --- DISPLAY IN PRO MODE - Unchanged --- */
+    /* --- DISPLAY IN PRO MODE --- */
     
     .calculator-body.programming-mode #input {
         font-size: 1.8rem; 
@@ -442,7 +481,7 @@
         grid-row: 1; 
     }
     
-    /* --- PROGRAMMING BUTTONS - Unchanged --- */
+    /* --- PROGRAMMING BUTTONS --- */
     
     .calculator-body.programming-mode .buttons-container {
         flex-direction: column; 
@@ -456,24 +495,32 @@
         transition: max-height 0.5s ease-in-out, opacity 0.5s ease-in-out;
     }
     
+    /* Właściwy układ przycisków w trybie programisty */
     .calculator-body.programming-mode .programming-buttons {
         max-height: 500px; 
         opacity: 1;
         pointer-events: auto;
         display: grid; 
-        grid-template-columns: repeat(6, 2fr); 
-        /* gap: var(--button-gap); */
+        grid-template-columns: repeat(6, 1fr); /* POPRAWKA: Zmieniono 2fr na 1fr */
+        gap: var(--button-gap); /* Zapewnienie odstępów */
     }
 
-    .calculator-body.programming-mode .scientific-buttons {
-        display: none !important; 
-        width: 0;
-        opacity: 0;
-    }
-    
     .programming-buttons .row,
     .programming-buttons .row-hex {
         display: contents; 
+    }
+    
+    /* Normalne przyciski w trybie programisty (drugi kontener) */
+    .calculator-body.programming-mode .normal-buttons {
+        order: 2;
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: var(--button-gap);
+        width: 100%;
+        max-height: 100vh;
+        opacity: 1;
+        pointer-events: auto;
+        flex-direction: unset; /* Ważne, aby nadpisać column */
     }
 
     .programming-buttons .row button,
@@ -487,16 +534,19 @@
     .programming-buttons .row-hex button {
         grid-column: span 1; 
     }
-}
-@media (max-width: 700px) {
+    
+    /* ========================================================= */
+    /* Styles for Date Calculator */
+    /* ========================================================= */
 
     .date-calculator-body {
         width: 100%;
-        padding: 0 500px; /* Note: This padding value seems extremely large for a max-width of 700px and might be a typo in the original code. It is preserved here but should be checked if this causes layout issues. */
+        /* POPRAWKA: Usunięcie błędu z 500px padding, który powodował horyzontalne przewijanie */
+        padding: 0 15px; 
         box-sizing: border-box;
     }
     
-    /* --- Absolute Positioning and Size Correction - Unchanged --- */
+    /* --- Absolute Positioning and Size Correction --- */
     
     .date-same-dates-message,
     .date-detailed-results, 
@@ -535,7 +585,7 @@
         font-weight: bold;
     }
     
-    /* --- Date Input Fields - Unchanged --- */
+    /* --- Date Input Fields --- */
     
     .input-group input[type="date"] {
         width: 100%;
@@ -545,16 +595,16 @@
         margin-bottom: 15px; 
     }
 
-    .input-group input[type="date"]::-webkit-calendar-picker-indicator {
-        /* font-size: 1.5rem; */ /* Commented out for a cleaner look */
-    }
-}
-@media (max-width: 700px) {
+    /* ========================================================= */
+    /* Menu Transform (Przesunięcia) */
+    /* ========================================================= */
     .menu-content.scientific-active {
-        transform: translateX(-15rem);
+        transform: translateX(0); /* POPRAWKA: Usunięto sztywne przesunięcia */
     }
     .menu-content.programming-active {
-        transform: translateX(-2rem);
+        transform: translateX(0); /* POPRAWKA: Usunięto sztywne przesunięcia */
     }
-
+    .menu-content {
+        transform: translateX(0); /* POPRAWKA: Usunięto sztywne przesunięcia */
+    }
 }
