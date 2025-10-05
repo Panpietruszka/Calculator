@@ -68,7 +68,7 @@
         padding: 15px; 
         grid-template-rows: 15% 1fr;
         height: auto; /* Adjusted for mobile */
-        min-height: 80vh; /* Adjusted for mobile */
+        min-height: 75vh; /* Adjusted for mobile */
     }
     .calculator-body.programming-mode {
         max-height: 60vh;
