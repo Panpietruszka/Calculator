@@ -21,7 +21,7 @@
         border-radius: 10px; /* Adjusted for mobile */
         box-shadow: none; /* Adjusted for mobile */
         transition: none; /* Adjusted for mobile */
-        transform: translateX(10rem) translateY(-4rem);
+        transform: translateX(-1.1rem) translateY(-4rem);
         padding: 0;
     }
 
@@ -626,4 +626,5 @@
         transform: translateX(-3rem); /* Zerowe przesunięcie lub minimalne */
     }
 }
+
 
