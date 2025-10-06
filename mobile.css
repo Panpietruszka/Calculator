@@ -13,16 +13,17 @@
     }
     .main-content {
         width: 100% !important; 
-        max-width: 400px;
+        max-width: 500px;
         height: auto; /* Adjusted for mobile */
-        max-height: 80vh; /* Adjusted for mobile */
+        min-height: 80vh; /* Adjusted for mobile */
         flex-direction: column; 
         margin: 0 auto;
         border-radius: 10px; /* Adjusted for mobile */
         box-shadow: none; /* Adjusted for mobile */
         transition: none; /* Adjusted for mobile */
-        transform: translateY(-4rem);
+        transform: translateY(-3rem) translateX(-1.5rem);
         padding: 0;
+        margin-bottom: 3rem;
     }
 
     .main-content.active,
@@ -59,7 +60,7 @@
         width: 100%;
         margin: 10px auto;
         padding: 15px 20px;
-        transform: translateX(-3.5rem);
+        transform: translateX(-3rem);
     }
 
     /* --- CALCULATOR BODY AND SCREEN --- */
@@ -372,13 +373,12 @@
         display: flex !important; 
         position: relative; 
         padding: 15px;
-        min-width: 350px;
+        width: 350px;
         flex-direction: column;
         align-items: center;
         justify-content: center;
         height: auto;
         box-sizing: border-box;
-        /* transform: translateX(1rem) */
     }
 
     .converter-mode-body.section-visible {
@@ -469,7 +469,6 @@
         pointer-events: auto;
         display: grid; 
         grid-template-columns: repeat(5, 1fr); 
-        margin-top: 6rem;
         /* gap: var(--button-gap); */
     }
 
@@ -623,7 +622,6 @@
         transform: translateX(-18rem); /* Mniejsze przesunięcie dla mniejszego ekranu */
     }
     .menu-content.programming-active {
-        transform: translateX(-3rem); /* Zerowe przesunięcie lub minimalne */
+        transform: translateX(-3.5rem); /* Zerowe przesunięcie lub minimalne */
     }
 }
-
