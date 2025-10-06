@@ -592,7 +592,6 @@
     .main-content {
         /* Minimalne dostosowanie głównego kontenera */
         max-width: 100%; /* Upewnij się, że nie jest za mały */
-        transform: translate(-1.1rem, -5rem);
     }
 
     /* W trybie naukowym/programistycznym przyciski są bardzo ciasne, 
@@ -605,6 +604,7 @@
     
     .calculator-body {
         padding: 5px; /* Zmniejsz padding głównego ciała kalkulatora */
+        transform: translateX(1rem);
     }
     
     /* Zmień rozmiary czcionek, aby wszystko się zmieściło */
