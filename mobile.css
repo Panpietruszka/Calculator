@@ -21,7 +21,7 @@
         border-radius: 10px; /* Adjusted for mobile */
         box-shadow: none; /* Adjusted for mobile */
         transition: none; /* Adjusted for mobile */
-        transform: translateY(-3rem);
+        transform: translateY(-3rem) translateX(-1.75rem);
         padding: 0;
     }
 
@@ -56,9 +56,10 @@
     }
     
     .menu-items li {
-        width: 90%;
+        width: 100%;
         margin: 10px auto;
         padding: 15px 20px;
+        transform: translateX(-3.5rem);
     }
 
     /* --- CALCULATOR BODY AND SCREEN --- */
@@ -336,7 +337,7 @@
         top: auto;
         left: auto;
         transform: none;
-        margin-top: 2rem;
+        margin-top: 1.25rem;
         margin-bottom: 20px;
         text-align: center;
     }
@@ -371,22 +372,28 @@
         display: flex !important; 
         position: relative; 
         padding: 15px;
-        width: 30rem;
+        min-width: 350px;
         flex-direction: column;
         align-items: center;
         justify-content: center;
         height: auto;
         box-sizing: border-box;
+        /* transform: translateX(1rem) */
     }
 
     .converter-mode-body.section-visible {
         display: flex !important; 
         flex-direction: column; 
         .converter-inputs {
-            transform: translateY(4rem) translateX(-14rem);
+            transform: translateY(4rem) translateX(-10rem);
         }
     }
-
+    .converters-title {
+        transform: translateX(-1rem) translateY(3rem);
+    }
+    .converters-list {
+        transform: translateX(0rem) translateY(3rem);
+    }
     .converter-inputs,
     .other-converter-inputs {
         position: relative; 
@@ -462,6 +469,7 @@
         pointer-events: auto;
         display: grid; 
         grid-template-columns: repeat(5, 1fr); 
+        margin-top: 6rem;
         /* gap: var(--button-gap); */
     }
 
@@ -551,10 +559,10 @@
 }
 @media (max-width: 700px) {
     .menu-content.scientific-active {
-        transform: translateX(-15rem);
+        transform: translateX(-18rem);
     }
     .menu-content.programming-active {
-        transform: translateX(-2rem);
+        transform: translateX(-3em);
     }
     .menu-content {
         transform: translateX(-3rem);
@@ -569,7 +577,7 @@
 /* ========================================================= */
 /* 🔥 FIX: Specyficzne style dla najmniejszych telefonów (< 375px) 🔥 */
 /* ========================================================= */
-@media (max-width: 374px) { 
+@media (max-width: 415px) { 
 
     /* Napraw błąd: Używasz flex-direction: column dla .buttons-container, 
        ale w trybie scientific-mode ustawiasz .scientific-buttons na flex-direction: row. 
@@ -612,9 +620,9 @@
     
     /* Jeśli .menu-content jest ciągle za małe (dotyczy przesuwania trybów) */
     .menu-content.scientific-active {
-        transform: translateX(-10rem); /* Mniejsze przesunięcie dla mniejszego ekranu */
+        transform: translateX(-18rem); /* Mniejsze przesunięcie dla mniejszego ekranu */
     }
     .menu-content.programming-active {
-        transform: translateX(0rem); /* Zerowe przesunięcie lub minimalne */
+        transform: translateX(-3rem); /* Zerowe przesunięcie lub minimalne */
     }
 }
