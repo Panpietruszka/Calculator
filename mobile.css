@@ -22,7 +22,7 @@
         border-radius: 10px; /* Adjusted for mobile */
         box-shadow: none; /* Adjusted for mobile */
         transition: none; /* Adjusted for mobile */
-        transform: translateY(0rem) translateX(0rem);
+        transform: translateY(-2rem) translateX(0rem);
         padding: 0;
     }
 
@@ -627,6 +627,7 @@
         transform: translateX(-3rem); /* Zerowe przesunięcie lub minimalne */
     }
 }
+
 
 
 
