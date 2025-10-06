@@ -591,7 +591,8 @@
 
     .main-content {
         /* Minimalne dostosowanie głównego kontenera */
-        max-width: 99%; /* Upewnij się, że nie jest za mały */
+        max-width: 100%; /* Upewnij się, że nie jest za mały */
+        transform: translate(1rem, 4rem);
     }
 
     /* W trybie naukowym/programistycznym przyciski są bardzo ciasne, 
@@ -626,5 +627,3 @@
         transform: translateX(-3rem); /* Zerowe przesunięcie lub minimalne */
     }
 }
-
-
