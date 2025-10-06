@@ -15,14 +15,13 @@
         width: 100% !important; 
         max-width: 400px;
         height: auto; /* Adjusted for mobile */
-        min-height: 80vh; /* Adjusted for mobile */
-        margin-bottom: 10px;
+        max-height: 80vh; /* Adjusted for mobile */
         flex-direction: column; 
         margin: 0 auto;
         border-radius: 10px; /* Adjusted for mobile */
         box-shadow: none; /* Adjusted for mobile */
         transition: none; /* Adjusted for mobile */
-        transform: translateY(-2rem) translateX(0rem);
+        transform: translateX(-1rem) translateY(-5rem);
         padding: 0;
     }
 
@@ -70,7 +69,7 @@
         padding: 15px; 
         grid-template-rows: 15% 1fr;
         height: auto; /* Adjusted for mobile */
-        min-height: 90vh; /* Adjusted for mobile */
+        min-height: 80vh; /* Adjusted for mobile */
     }
     .calculator-body.programming-mode {
         max-height: 60vh;
@@ -627,7 +626,3 @@
         transform: translateX(-3rem); /* Zerowe przesunięcie lub minimalne */
     }
 }
-
-
-
-
