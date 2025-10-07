@@ -246,7 +246,6 @@ document.addEventListener('DOMContentLoaded', () => {
         return normalizedRates;
     };
     
-    // ZMIANA: Usunięto pobieranie polskich nazw walut z NBP
     const getRatesFromNBP = async () => {
         const response = await fetch(NBP_RATES_URL);
         
@@ -258,11 +257,6 @@ document.addEventListener('DOMContentLoaded', () => {
         
         if (data && data.length > 0 && data[0].rates) {
             const ratesData = data[0].rates;
-            
-            // Usunięto:
-            // ratesData.forEach(rate => {
-            //     currencyNames[rate.code] = rate.currency; // Pobrałoby polskie nazwy!
-            // });
             
             return normalizeNbpRates(ratesData);
         } else {
@@ -321,7 +315,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
     
-    // TA FUNKCJA JEST KLUCZOWA: Pobiera angielskie nazwy walut z API.
+    // This function retrieves English currency names from the API.
     const getCurrencyNames = async () => {
         try {
             const response = await fetch(CURRENCIES_URL);
@@ -349,7 +343,7 @@ document.addEventListener('DOMContentLoaded', () => {
             'CHF': 1.05, 'JPY': 0.0068, 'CZK': 0.043, 'HUF': 0.0028, 'AUD': 0.64
         };
         currencyNames = {
-            // Domyślne nazwy są w j. angielskim
+            // Default names are in English
             'PLN': 'Polish Złoty', 'USD': 'US Dollar', 'EUR': 'Euro',
             'GBP': 'British Pound', 'CHF': 'Swiss Franc', 'JPY': 'Japanese Yen',
             'CZK': 'Czech Koruna', 'HUF': 'Hungarian Forint', 'AUD': 'Australian Dollar'
@@ -384,10 +378,14 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
     
+    /**
+     * Swaps the selected units and the values in the currency inputs.
+     */
     const swapCurrencies = () => {
         const fromSelectedDiv = customFromSelect.querySelector('.select-selected');
         const toSelectedDiv = customToSelect.querySelector('.select-selected');
         
+        // SWAP UNITS (custom-select)
         const tempText = fromSelectedDiv.textContent;
         const tempValue = fromSelectedDiv.getAttribute('data-value');
         
@@ -397,8 +395,13 @@ document.addEventListener('DOMContentLoaded', () => {
         toSelectedDiv.textContent = tempText;
         toSelectedDiv.setAttribute('data-value', tempValue);
         
+        // SWAP INPUT VALUES
+        const tempInputValue = fromCurrencyInput.value;
+        fromCurrencyInput.value = toCurrencyInput.value;
+        toCurrencyInput.value = tempInputValue;
+
         saveCurrenciesToStorage();
-        window.convertFromTo();
+        // window.convertFromTo(); // Optional: don't convert if values are swapped
     };
 
 
@@ -500,10 +503,14 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
+    /**
+     * Swaps the selected units and the values in the length inputs.
+     */
     const swapLengthUnits = () => {
         const fromSelectedDiv = customFromSelectLength.querySelector('.select-selected');
         const toSelectedDiv = customToSelectLength.querySelector('.select-selected');
         
+        // SWAP UNITS (custom-select)
         const tempText = fromSelectedDiv.textContent;
         const tempValue = fromSelectedDiv.getAttribute('data-value');
         
@@ -513,10 +520,15 @@ document.addEventListener('DOMContentLoaded', () => {
         toSelectedDiv.textContent = tempText;
         toSelectedDiv.setAttribute('data-value', tempValue);
         
+        // SWAP INPUT VALUES
+        const tempInputValue = fromLengthInput.value;
+        fromLengthInput.value = toLengthInput.value;
+        toLengthInput.value = tempInputValue;
+        
         localStorage.setItem(STORAGE_KEY_FROM_LENGTH, fromSelectedDiv.getAttribute('data-value'));
         localStorage.setItem(STORAGE_KEY_TO_LENGTH, toSelectedDiv.getAttribute('data-value'));
         
-        window.performLengthConversion();
+        // window.performLengthConversion(); // Optional: don't convert if values are swapped
     };
 
 
@@ -615,10 +627,14 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
     
+    /**
+     * Swaps the selected units and the values in the mass inputs.
+     */
     const swapMassUnits = () => {
         const fromSelectedDiv = customFromSelectMass.querySelector('.select-selected');
         const toSelectedDiv = customToSelectMass.querySelector('.select-selected');
         
+        // SWAP UNITS (custom-select)
         const tempText = fromSelectedDiv.textContent;
         const tempValue = fromSelectedDiv.getAttribute('data-value');
         
@@ -628,10 +644,15 @@ document.addEventListener('DOMContentLoaded', () => {
         toSelectedDiv.textContent = tempText;
         toSelectedDiv.setAttribute('data-value', tempValue);
         
+        // SWAP INPUT VALUES
+        const tempInputValue = fromMassInput.value;
+        fromMassInput.value = toMassInput.value;
+        toMassInput.value = tempInputValue;
+        
         localStorage.setItem(STORAGE_KEY_FROM_MASS, fromSelectedDiv.getAttribute('data-value'));
         localStorage.setItem(STORAGE_KEY_TO_MASS, toSelectedDiv.getAttribute('data-value'));
         
-        window.performMassConversion();
+        // window.performMassConversion(); // Optional: don't convert if values are swapped
     };
 
     // ===============================================
@@ -734,10 +755,14 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
+    /**
+     * Swaps the selected units and the values in the temperature inputs.
+     */
     const swapTemperatureUnits = () => {
         const fromSelectedDiv = customFromSelectTemp.querySelector('.select-selected');
         const toSelectedDiv = customToSelectTemp.querySelector('.select-selected');
         
+        // SWAP UNITS (custom-select)
         const tempText = fromSelectedDiv.textContent;
         const tempValue = fromSelectedDiv.getAttribute('data-value');
         
@@ -747,10 +772,15 @@ document.addEventListener('DOMContentLoaded', () => {
         toSelectedDiv.textContent = tempText;
         toSelectedDiv.setAttribute('data-value', tempValue);
         
+        // SWAP INPUT VALUES
+        const tempInputValue = fromTempInput.value;
+        fromTempInput.value = toTempInput.value;
+        toTempInput.value = tempInputValue;
+        
         localStorage.setItem(STORAGE_KEY_FROM_TEMP, fromSelectedDiv.getAttribute('data-value'));
         localStorage.setItem(STORAGE_KEY_TO_TEMP, toSelectedDiv.getAttribute('data-value'));
         
-        window.performTemperatureConversion();
+        // window.performTemperatureConversion(); // Optional: don't convert if values are swapped
     };
 
     // ===============================================
@@ -849,10 +879,14 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
     
+    /**
+     * Swaps the selected units and the values in the volume inputs.
+     */
     const swapVolumeUnits = () => {
         const fromSelectedDiv = customFromSelectVolume.querySelector('.select-selected');
         const toSelectedDiv = customToSelectVolume.querySelector('.select-selected');
         
+        // SWAP UNITS (custom-select)
         const tempText = fromSelectedDiv.textContent;
         const tempValue = fromSelectedDiv.getAttribute('data-value');
         
@@ -862,10 +896,15 @@ document.addEventListener('DOMContentLoaded', () => {
         toSelectedDiv.textContent = tempText;
         toSelectedDiv.setAttribute('data-value', tempValue);
         
+        // SWAP INPUT VALUES
+        const tempInputValue = fromVolumeInput.value;
+        fromVolumeInput.value = toVolumeInput.value;
+        toVolumeInput.value = tempInputValue;
+
         localStorage.setItem(STORAGE_KEY_FROM_VOLUME, fromSelectedDiv.getAttribute('data-value'));
         localStorage.setItem(STORAGE_KEY_TO_VOLUME, toSelectedDiv.getAttribute('data-value'));
         
-        window.performVolumeConversion();
+        // window.performVolumeConversion(); // Optional: don't convert if values are swapped
     };
 
 
