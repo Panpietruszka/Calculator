@@ -188,6 +188,7 @@ main {
     box-sizing: border-box;
     display: grid;
     grid-template-rows: 20% 1fr;
+    z-index: 2;
 }
 
 .calculator-body.scientific-mode {
@@ -678,4 +679,13 @@ main {
 }
 .menu-content.programming-active {
     transform: translateX(15rem);
+}
+.main-content.programming-mode .converter-content {
+    transform: translateX(12rem);
+}
+.menu-content.scientific-active .converter-content {
+    transform: translateX(12rem);
+}
+.main-content.scientific-mode .converter-content {
+    transform: translateX(13rem);
 }
