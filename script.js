@@ -4,7 +4,7 @@
  * ========================================
  */
 let lastOperationWasEquals = false;
-let history = []; 
+let history = [];
 let currentMode = 'dec'; // Default mode for programmer calculator
 const HISTORY_KEY = 'calculatorHistory';
 
@@ -20,11 +20,11 @@ const menuPanel = document.querySelector('.menu-panel');
 
 // Views and Menu Panels
 const historyContent = document.querySelector('.history-content');
-const menuContent = document.querySelector('.menu-content'); // TEN ELEMENT OTRZYMA KLASĘ
-const converterContent = document.querySelector('.converter-content'); 
-const converterModeBody = document.querySelector('.converter-mode-body'); 
+const menuContent = document.querySelector('.menu-content');
+const converterContent = document.querySelector('.converter-content');
+const converterModeBody = document.querySelector('.converter-mode-body');
 const dateCalcBody = document.querySelector('.date-calculator-body');
-const menuItems = document.querySelector(".menu-items"); // TEN ELEMENT OTRZYMA KLASĘ
+const menuItems = document.querySelector(".menu-items");
 
 // Display Fields
 const inputField = document.getElementById('input');
@@ -34,7 +34,7 @@ const resultField = document.getElementById('result');
 const historyLink = document.getElementById('history-link');
 const scientificLink = document.getElementById('scientific-link');
 const programmingLink = document.getElementById('programming-link');
-const converterLink = document.getElementById('converter-link'); 
+const converterLink = document.getElementById('converter-link');
 const dateLink = document.getElementById('date-link');
 
 // History Elements
@@ -43,7 +43,7 @@ const clearHistoryBtn = document.getElementById('clear-history-btn');
 
 // Icons
 const hamburgerIcon = document.querySelector('.hamburger-icon');
-const backIcon = document.getElementById('back-to-calc'); // The ID in HTML must be 'back-to-calc'
+const backIcon = document.getElementById('back-to-calc');
 
 /**
  * ========================================
@@ -53,10 +53,9 @@ const backIcon = document.getElementById('back-to-calc'); // The ID in HTML must
 
 // Function to get the Smooth Scrollbar instance
 const getHistoryScrollbar = () => {
-    // The scrollbar is initialized on this element in animation.js
-    const scrollContainer = document.querySelector('.js-scroll-list'); 
-    
-    // We use the global get() method to retrieve the instance
+    // The scrollbar is initialized on this element in animation.js (assuming the global Scrollbar object exists)
+    const scrollContainer = document.querySelector('.js-scroll-list');
+
     if (window.Scrollbar && scrollContainer) {
         return window.Scrollbar.get(scrollContainer);
     }
@@ -66,11 +65,11 @@ const getHistoryScrollbar = () => {
 // Function to force Smooth Scrollbar update and fix mouse scrolling.
 const updateHistoryScrollbar = (scrollToTop = false) => {
     const historyScrollbarInstance = getHistoryScrollbar();
-    
+
     if (historyScrollbarInstance) {
         // Force recalculation of container sizes
-        historyScrollbarInstance.update(); 
-        
+        historyScrollbarInstance.update();
+
         // Optional: Scroll to the very top
         if (scrollToTop) {
             historyScrollbarInstance.scrollTo(0, 0, 300);
@@ -86,13 +85,16 @@ const updateHistoryScrollbar = (scrollToTop = false) => {
  * ========================================
  */
 const PROGRAMMING_ALLOWED_KEYS = {
-    'hex': '0123456789abcdef', 
+    'hex': '0123456789abcdef',
     'dec': '0123456789',
     'oct': '01234567',
     'bin': '01'
 };
 const SCIENTIFIC_ALLOWED_CHARS = ['(', ')', '^', 'p', 'i', 'e', 's', 'c', 't', 'l', 'o', 'g', 'n', 'h', 'a', 'd', 'r', '!', '%', '|'];
-const DISPLAY_OPERATOR_MAP = {'*': '×', '/': '÷'};
+const DISPLAY_OPERATOR_MAP = {
+    '*': '×',
+    '/': '÷'
+};
 
 
 /**
@@ -127,13 +129,16 @@ const formatResult = (result) => {
 
 const addToHistory = (expression, result) => {
     const formattedResult = formatResult(result);
-    history.push({ expression, result: formattedResult });
-    if (history.length > 200) { 
-        history.shift(); 
+    history.push({
+        expression,
+        result: formattedResult
+    });
+    if (history.length > 200) {
+        history.shift();
     }
     saveHistory();
     // Update scrollbar because a new element has been added
-    updateHistoryScrollbar(); 
+    updateHistoryScrollbar();
 };
 
 const displayHistory = () => {
@@ -145,10 +150,10 @@ const displayHistory = () => {
 
     historyToShow.forEach(item => {
         const li = document.createElement('li');
-        li.classList.add('history-item'); 
+        li.classList.add('history-item');
         li.innerHTML = `<span class="expression">${item.expression}</span><br><span class="result">${item.result}</span>`;
         historyList.appendChild(li);
-        
+
         // KEY: Restore the history entry to the calculator
         li.addEventListener('click', () => {
             updateDisplay(item.result);
@@ -156,9 +161,9 @@ const displayHistory = () => {
             toggleMenu(false); // Closes the menu after selecting an element
         });
     });
-    
+
     // Ensure that after displaying history, the scroll is at the top 
-    updateHistoryScrollbar(true); 
+    updateHistoryScrollbar(true);
 };
 
 const clearHistory = () => {
@@ -173,10 +178,19 @@ const convertNumber = (value, fromMode, toMode) => {
     if (value === '') return '0';
     let base;
     switch (fromMode) {
-        case 'bin': base = 2; break;
-        case 'oct': base = 8; break;
-        case 'hex': base = 16; break;
-        case 'dec': default: base = 10; break;
+        case 'bin':
+            base = 2;
+            break;
+        case 'oct':
+            base = 8;
+            break;
+        case 'hex':
+            base = 16;
+            break;
+        case 'dec':
+        default:
+            base = 10;
+            break;
     }
     decValue = parseInt(value, base);
     if (isNaN(decValue)) return 'Error';
@@ -184,10 +198,19 @@ const convertNumber = (value, fromMode, toMode) => {
 
     let result;
     switch (toMode) {
-        case 'bin': result = (decValue >>> 0).toString(2); break;
-        case 'oct': result = (decValue >>> 0).toString(8); break;
-        case 'hex': result = (decValue >>> 0).toString(16).toUpperCase(); break;
-        case 'dec': default: result = decValue.toString(10); break;
+        case 'bin':
+            result = (decValue >>> 0).toString(2);
+            break;
+        case 'oct':
+            result = (decValue >>> 0).toString(8);
+            break;
+        case 'hex':
+            result = (decValue >>> 0).toString(16).toUpperCase();
+            break;
+        case 'dec':
+        default:
+            result = decValue.toString(10);
+            break;
     }
     return result;
 };
@@ -201,17 +224,19 @@ const convertNumber = (value, fromMode, toMode) => {
 const evaluateProgrammingExpression = (expression) => {
     try {
         const parts = expression.split(/([+\-×÷/]|mod|AND|OR|XOR|<<|>>)/i).filter(Boolean).map(p => p.trim());
-        if (parts.length === 0 || (parts.length === 1 && parts[0] === '')) { return '0'; }
+        if (parts.length === 0 || (parts.length === 1 && parts[0] === '')) {
+            return '0';
+        }
         if (parts.length === 1) {
             const decResult = convertNumber(parts[0], currentMode, 'dec');
             return convertNumber(decResult, 'dec', currentMode);
         }
-        
+
         const operatorIndex = parts.findIndex(p => ['+', '-', '×', '÷', '/', 'MOD', 'AND', 'OR', 'XOR', '<<', '>>'].includes(p.toUpperCase()));
         if (operatorIndex <= 0 || operatorIndex + 1 >= parts.length) {
             return convertNumber(parts[0], currentMode, currentMode);
         }
-        
+
         const operator = parts[operatorIndex].toUpperCase();
         const num1Str = parts[0].replace('×', '*').replace('÷', '/');
         const num2Str = parts[operatorIndex + 1].replace('×', '*').replace('÷', '/');
@@ -220,21 +245,45 @@ const evaluateProgrammingExpression = (expression) => {
 
         let result;
         switch (operator) {
-            case '+': result = num1 + num2; break;
-            case '-': result = num1 - num2; break;
+            case '+':
+                result = num1 + num2;
+                break;
+            case '-':
+                result = num1 - num2;
+                break;
             case '×':
-            case '*': result = num1 * num2; break;
+            case '*':
+                result = num1 * num2;
+                break;
             case '÷':
-            case '/': result = num2 === 0 ? NaN : Math.trunc(num1 / num2); break;
-            case 'MOD': case '%': result = num1 % num2; break;
-            case 'AND': result = num1 & num2; break;
-            case 'OR': result = num1 | num2; break;
-            case 'XOR': result = num1 ^ num2; break;
-            case '<<': result = num1 << num2; break;
-            case '>>': result = num1 >> num2; break;
-            default: return 'Error';
+            case '/':
+                result = num2 === 0 ? NaN : Math.trunc(num1 / num2);
+                break;
+            case 'MOD':
+            case '%':
+                result = num1 % num2;
+                break;
+            case 'AND':
+                result = num1 & num2;
+                break;
+            case 'OR':
+                result = num1 | num2;
+                break;
+            case 'XOR':
+                result = num1 ^ num2;
+                break;
+            case '<<':
+                result = num1 << num2;
+                break;
+            case '>>':
+                result = num1 >> num2;
+                break;
+            default:
+                return 'Error';
         }
-        if (!Number.isFinite(result)) { return 'Error'; }
+        if (!Number.isFinite(result)) {
+            return 'Error';
+        }
         return convertNumber(result.toString(), 'dec', currentMode);
     } catch (error) {
         return 'Error';
@@ -245,46 +294,105 @@ const isPartialScientificFunction = (expression) => {
     const trimmed = expression.trim();
     if (trimmed === '' || trimmed === '0') return false;
 
-    // Simple check: does it end with an operator or an open parenthesis
-    const operators = ['+', '-', '×', '÷', '/', '*', '^', '%', 'mod'];
-    const lastChar = trimmed.slice(-1);
-    if (operators.includes(lastChar) || /\($/.test(trimmed)) return true; 
+    // Checks for incomplete functions (sin(, log() etc.) AND incomplete operators (+, -, x, /)
+    return /(?:sin|cos|tan|log|ln|10\^|2√|3√|\|)$/i.test(trimmed) || 
+               /[\+\-×÷*/^%]$/.test(trimmed);
+};
 
-    // Check for incomplete functions (e.g., just 'sin' or 'log(')
-    if (/(?:sin|cos|tan|log|ln|10\^|2√|3√)$/i.test(trimmed)) return true;
+// 🏆 MODIFIED FUNCTION: Extracts the last, complete value/operation.
+const getLastCompleteValue = (expression) => {
+    let expr = expression.trim();
+    if (expr === '') return ''; 
 
-    return false;
+    // 1. Define all possible operators, including those used in scientific mode
+    const operators = ['+', '-', '×', '÷', '*', '/', '%', '^'];
+    
+    // 2. Find the last operator that is not part of parentheses
+    let balance = 0;
+    let lastOperatorIndex = -1;
+
+    for (let i = expr.length - 1; i >= 0; i--) {
+        const char = expr[i];
+
+        if (char === ')') {
+            balance++;
+        } else if (char === '(') {
+            balance--;
+        }
+
+        // When the balance is 0, it means we are outside parentheses (main level)
+        if (balance === 0) {
+            // Check if it's a main operator
+            if (operators.includes(char)) {
+                // Found the last operator on the highest level
+                lastOperatorIndex = i;
+                break; 
+            }
+        }
+    }
+
+    // 3. If an operator is found at the very end, we return what is before it
+    if (lastOperatorIndex !== -1 && lastOperatorIndex === expr.length - 1) {
+        const completePart = expr.substring(0, lastOperatorIndex).trim();
+        
+        // Security against only a number, which is correct (e.g., when I delete 3 from 3+, only '+' remains)
+        if (completePart === '') {
+             // In this case, we return what is before the last character, which is the operator.
+             return expr.substring(0, expr.length - 1);
+        }
+        return completePart;
+    } 
+    
+    // 4. If no operator is found at the end or the entire expression is incomplete (e.g., sin(), 36), we return the whole thing.
+    return expression;
 };
 
 const evaluateExpression = (expression) => {
     if (mainContent.classList.contains('programming-mode')) {
         return evaluateProgrammingExpression(expression);
     }
-    
-    // Prevent errors resulting from incomplete scientific functions
-    if (mainContent.classList.contains('scientific-mode') && isPartialScientificFunction(expression)) {
+
+    // 🏆 MODIFIED LOGIC: Works for Standard AND Scientific.
+    if (isPartialScientificFunction(expression)) {
+        const completePart = getLastCompleteValue(expression);
+        
+        if (completePart !== expression && completePart !== '') {
+            // If a complete part is found ('36' from '36+'), we try to calculate it.
+            try {
+                const result = evaluateExpression(completePart);
+                // We return the correct value if calculated
+                if (Number.isFinite(result)) {
+                    return result; 
+                }
+            } catch {
+                // Empty. We proceed to PARTIAL_FUNCTION
+            }
+        }
+        
+        // We return PARTIAL_FUNCTION if it cannot be calculated (e.g., 'sin(') or an error occurs
         return 'PARTIAL_FUNCTION';
     }
 
+
     try {
         let cleanedExpression = expression
-             .replace(/x/g, '*')
-             .replace(/×/g, '*')
-             .replace(/÷/g, '/')
-             .replace(/mod/g, '%')
-             .replace(/pi/gi, 'Math.PI') 
-             .replace(/e/gi, 'Math.E')  
-             .replace(/sin\(/gi, 'Math.sin(') 
-             .replace(/cos\(/gi, 'Math.cos(')
-             .replace(/tan\(/gi, 'Math.tan(')
-             .replace(/log\(/gi, 'Math.log10(') 
-             .replace(/ln\(/gi, 'Math.log(') 
-             .replace(/10\^/g, 'Math.pow(10,')
-             .replace(/2√\(/g, 'Math.sqrt(')
-             .replace(/3√\(/g, 'Math.cbrt(')
-             .replace(/\|/g, 'Math.abs(')
-             .replace(/\^/g, '**'); 
-             
+            .replace(/x/g, '*')
+            .replace(/×/g, '*')
+            .replace(/÷/g, '/')
+            .replace(/mod/g, '%')
+            .replace(/pi/gi, 'Math.PI')
+            .replace(/e/gi, 'Math.E')
+            .replace(/sin\(/gi, 'Math.sin(')
+            .replace(/cos\(/gi, 'Math.cos(')
+            .replace(/tan\(/gi, 'Math.tan(')
+            .replace(/log\(/gi, 'Math.log10(')
+            .replace(/ln\(/gi, 'Math.log(')
+            .replace(/10\^/g, 'Math.pow(10,')
+            .replace(/2√\(/g, 'Math.sqrt(')
+            .replace(/3√\(/g, 'Math.cbrt(')
+            .replace(/\|/g, 'Math.abs(')
+            .replace(/\^/g, '**');
+
         cleanedExpression = cleanedExpression.replace(/(\d+)\!/g, (match, n) => {
             const num = parseInt(n);
             if (num < 0 || !Number.isInteger(num)) return `NaN`;
@@ -292,7 +400,7 @@ const evaluateExpression = (expression) => {
             for (let i = 2; i <= num; i++) result *= i;
             return result.toString();
         });
-        
+
         if (cleanedExpression.trim() === '') {
             return 0;
         }
@@ -314,12 +422,12 @@ const updateProgrammingButtonState = (mode) => {
     const allNumericButtons = document.querySelectorAll(
         '.programming-buttons button[data-val], .normal-buttons button[data-val]'
     );
-    
+
     const allowedDigits = PROGRAMMING_ALLOWED_KEYS;
 
     allNumericButtons.forEach(button => {
         const val = button.dataset.val ? button.dataset.val.toLowerCase() : '';
-        
+
         if (val === '' || button.dataset.op || button.dataset.fn) return;
 
         if (val === '.') {
@@ -342,23 +450,34 @@ const updateProgrammingButtonState = (mode) => {
 
 const updateDisplay = (value) => {
     inputField.value = value;
+    
+    // 💡 FIX: Scroll the text field to the end after each update
+    inputField.scrollLeft = inputField.scrollWidth;
+
     resultField.style.visibility = 'visible';
 
     if (value === '') {
         resultField.innerText = '0';
         return;
     }
-    
+
     if (mainContent.classList.contains('programming-mode')) {
         const result = evaluateProgrammingExpression(value);
         resultField.innerText = result !== 'Error' ? result : 'Error';
         return;
     }
-    
+
     const result = evaluateExpression(value);
-    
+
+    // 🏆 MODIFIED HANDLING: If PARTIAL_FUNCTION is returned, we do not clear, we only leave
+    // the last correct result or set to '0' in case of a new operation.
     if (result === 'PARTIAL_FUNCTION') {
-        resultField.innerText = '0';
+        // If it's PARTIAL_FUNCTION, it means getLastCompleteValue returned a correct part
+        // and the result is already set in 'result' by the recursive call to evaluateExpression.
+        // If there was no recursive call, we leave the current result (or '0').
+        if (resultField.innerText === '') {
+            resultField.innerText = '0';
+        }
         return;
     }
 
@@ -371,7 +490,7 @@ const updateDisplay = (value) => {
 
 const toggleMenu = (active) => {
     if (active === undefined) {
-        mainContent.classList.toggle('active'); 
+        mainContent.classList.toggle('active');
         menuPanel.classList.toggle('active');
     } else {
         if (active) {
@@ -387,10 +506,10 @@ const toggleMenu = (active) => {
             clearHistoryBtn.style.display = 'none'; // Hide history button when closing
         }
     }
-    
+
     // Key fix: refresh Scrollbar when the menu opens/closes
-    updateHistoryScrollbar(); 
-    
+    updateHistoryScrollbar();
+
     // After changing the menu state, update icon visibility.
     let currentView = 'calculator';
     if (converterModeBody.style.display === 'flex') {
@@ -401,16 +520,16 @@ const toggleMenu = (active) => {
     switchMainView(currentView);
 };
 
-// 🏆 ZMIANA: Dodajemy zarządzanie klasami dla menu-items ORAZ menuContent
+// 🏆 CHANGE: We add management of classes for menu-items AND menuContent
 const toggleCalculatorModes = (mode) => {
     ['scientific', 'programming'].forEach(m => {
         mainContent.classList.remove(`${m}-mode`);
         calculatorBody.classList.remove(`${m}-mode`);
-        // USUŃ: klasę aktywnego trybu z kontenerów menu
+        // REMOVE: active mode class from menu containers
         if (menuItems) {
-            menuItems.classList.remove(`${m}-active`); 
+            menuItems.classList.remove(`${m}-active`);
         }
-        if (menuContent) { // DODANE: Usuń klasę z menuContent
+        if (menuContent) { // ADDED: Remove class from menuContent
             menuContent.classList.remove(`${m}-active`);
         }
     });
@@ -418,11 +537,11 @@ const toggleCalculatorModes = (mode) => {
     if (mode !== 'normal') {
         mainContent.classList.add(`${mode}-mode`);
         calculatorBody.classList.add(`${mode}-mode`);
-        // DODAJ: klasę aktywnego trybu do kontenerów menu
+        // ADD: active mode class to menu containers
         if (menuItems) {
             menuItems.classList.add(`${mode}-active`);
         }
-        if (menuContent) { // DODANE: Dodaj klasę do menuContent
+        if (menuContent) { // ADDED: Add class to menuContent
             menuContent.classList.add(`${mode}-active`);
         }
     }
@@ -435,35 +554,35 @@ const toggleCalculatorModes = (mode) => {
 const switchMenuPanelContent = (panelName) => {
     // List of all panels to switch
     const allPanels = [menuContent, historyContent, converterContent];
-    
+
     // 1. Remove the 'active-panel' class from all panels
     allPanels.forEach(panel => {
         if (panel) {
-            panel.classList.remove('active-panel'); 
+            panel.classList.remove('active-panel');
             // Optional: Ensure that inline 'display' style does not conflict, if it was previously set
-            panel.style.display = ''; 
+            panel.style.display = '';
         }
     });
-    
+
     // Reset the "Clear History" button state
     clearHistoryBtn.style.display = 'none';
 
     const targetPanel = {
         'main': menuContent,
         'history': historyContent,
-        'converters': converterContent 
-    }[panelName];
+        'converters': converterContent
+    } [panelName];
 
     // 2. Add the 'active-panel' class to the selected panel
     if (targetPanel) {
-        targetPanel.classList.add('active-panel'); 
+        targetPanel.classList.add('active-panel');
     }
-    
+
     if (panelName === 'history') {
         displayHistory();
         // KEY: Force Smooth Scrollbar update to correctly handle the list
-        updateHistoryScrollbar(); 
-    } 
+        updateHistoryScrollbar();
+    }
 };
 
 const switchMainView = (viewName) => {
@@ -476,28 +595,29 @@ const switchMainView = (viewName) => {
     // Ensure all main views are hidden
     Object.values(views).forEach(view => {
         // We use style.display for main views (outside the menu), which is correct
-        if (view) view.style.display = 'none';
+        // Note: The `section-visible` class should handle this in CSS, but the inline style overrides for clarity in JS.
+        if (view) view.style.display = 'none'; 
     });
-    
+
     const targetView = views[viewName];
     if (targetView) {
         // Show only the selected view
         targetView.style.display = (viewName === 'calculator' ? 'grid' : 'flex');
     }
-    
+
     // Logic for displaying icons (arrow vs hamburger)
     const menuActive = menuPanel.classList.contains('active');
-    
+
     // Show arrow if menu is open OR view is full-screen (outside menu)
     const showBackIcon = menuActive || viewName === 'converterBody' || viewName === 'dateCalculator';
-    
+
     // Show Hamburger if menu is closed AND view is the main calculator
     const showHamburgerIcon = !menuActive && viewName === 'calculator';
 
     // Update icons
     backIcon.style.opacity = showBackIcon ? '1' : '0';
     backIcon.style.visibility = showBackIcon ? 'visible' : 'hidden';
-    
+
     hamburgerIcon.style.opacity = showHamburgerIcon ? '1' : '0';
     hamburgerIcon.style.visibility = showHamburgerIcon ? 'visible' : 'hidden';
 };
@@ -516,7 +636,7 @@ const handleButtonClick = (event) => {
 
     const buttonValue = button.dataset.op || button.dataset.val || button.innerText;
     let currentInput = inputField.value;
-    const operators = ['+', '-', '×', '÷', '%']; 
+    const operators = ['+', '-', '×', '÷', '%'];
     const isOperator = operators.includes(buttonValue);
     const lastCharIsOperator = operators.includes(currentInput.slice(-1));
     const isFunction = button.dataset.fn;
@@ -540,16 +660,16 @@ const handleButtonClick = (event) => {
 
     if (isFunction) {
         switch (isFunction) {
-            case 'AC': 
+            case 'AC':
                 updateDisplay('');
                 lastOperationWasEquals = false;
                 return;
             case 'equals': // =
                 const result = evaluateExpression(currentInput);
                 const finalResult = (result === 'PARTIAL_FUNCTION' || !Number.isFinite(result)) ? 'Error' : result.toString();
-                
+
                 if (finalResult !== 'Error') {
-                    addToHistory(currentInput, finalResult); 
+                    addToHistory(currentInput, finalResult);
                     updateDisplay(finalResult);
                     resultField.style.visibility = 'visible';
                     lastOperationWasEquals = true;
@@ -558,10 +678,10 @@ const handleButtonClick = (event) => {
                     resultField.innerText = '';
                 }
                 return;
-            case 'backspace': 
+            case 'backspace':
                 updateDisplay(currentInput.slice(0, -1));
                 return;
-            case 'plus-minus': 
+            case 'plus-minus':
                 if (currentInput.startsWith('-')) {
                     updateDisplay(currentInput.substring(1));
                 } else if (currentInput !== '') {
@@ -572,10 +692,10 @@ const handleButtonClick = (event) => {
                 break;
         }
     }
-    
+
     if (isScientificMode && button.dataset.sci) {
         let valueToAdd = button.dataset.sci;
-        
+
         if (valueToAdd === '10x') {
             valueToAdd = '10^(';
         } else if (valueToAdd === '2√x') {
@@ -588,7 +708,7 @@ const handleButtonClick = (event) => {
             valueToAdd = '^2';
         } else if (valueToAdd === '|x|') {
             valueToAdd = '|';
-        } else if (!valueToAdd.includes('(') && !valueToAdd.includes('^') && !valueToAdd.includes('!')) { 
+        } else if (!valueToAdd.includes('(') && !valueToAdd.includes('^') && !valueToAdd.includes('!')) {
             valueToAdd += '(';
         }
 
@@ -632,40 +752,38 @@ const handleProgrammingButtonClick = (event) => {
 
         const valueToConvert = lastOperationWasEquals ? resultField.innerText : inputField.value;
         const converted = convertNumber(valueToConvert, oldMode, currentMode);
-        
+
         inputField.value = converted;
         updateDisplay(converted);
-        lastOperationWasEquals = false; 
+        lastOperationWasEquals = false;
 
         document.querySelectorAll('.program-mode').forEach(btn => btn.classList.remove('active-mode'));
         button.classList.add('active-mode');
 
-        updateProgrammingButtonState(currentMode); 
+        updateProgrammingButtonState(currentMode);
 
     } else if (button.dataset.fn === 'equals') {
         const result = evaluateProgrammingExpression(inputField.value);
         if (result !== 'Error') {
             addToHistory(inputField.value, result);
             updateDisplay(result.toString());
-            resultField.innerText = result; 
+            resultField.innerText = result;
             resultField.style.visibility = 'visible';
             lastOperationWasEquals = true;
         } else {
-            inputField.value = ''; 
+            inputField.value = '';
             resultField.innerText = 'Error';
-            updateDisplay(inputField.value); 
+            updateDisplay(inputField.value);
         }
         return;
     } else if (button.dataset.fn) {
         handleButtonClick(event);
         return;
-    } 
-    
-    else { // Value/operator input
+    } else { // Value/operator input
         let currentInput = inputField.value;
         const operators = ['AND', 'OR', 'XOR', '<<', '>>', '+', '-', '×', '÷', 'MOD'];
         const isOperator = operators.includes(value.toUpperCase());
-        
+
         if (lastOperationWasEquals) {
             if (isOperator) {
                 currentInput = resultField.innerText;
@@ -674,26 +792,25 @@ const handleProgrammingButtonClick = (event) => {
             }
             lastOperationWasEquals = false;
         }
-        
+
         const lastCharIsOperator = operators.some(op => currentInput.trim().endsWith(op));
 
         if (isOperator) {
             const opToAppend = value.toUpperCase();
             if (lastCharIsOperator) {
-                   const lastOp = operators.find(op => currentInput.trim().endsWith(op));
-                   if (lastOp) {
-                        currentInput = currentInput.slice(0, currentInput.lastIndexOf(lastOp)) + ' ' + opToAppend + ' ';
-                   } else {
-                        currentInput += ' ' + opToAppend + ' ';
-                   }
+                const lastOp = operators.find(op => currentInput.trim().endsWith(op));
+                if (lastOp) {
+                    currentInput = currentInput.slice(0, currentInput.lastIndexOf(lastOp)) + ' ' + opToAppend + ' ';
+                } else {
+                    currentInput += ' ' + opToAppend + ' ';
+                }
             } else {
-                currentInput += ' ' + opToAppend + ' '; 
+                currentInput += ' ' + opToAppend + ' ';
             }
-        } 
-        else {
+        } else {
             currentInput += value;
         }
-        
+
         currentInput = currentInput.replace(/\s+/g, ' ').trim();
 
         updateDisplay(currentInput);
@@ -705,13 +822,15 @@ const handleKeyboardInput = (event) => {
     const currentInput = inputField.value;
     const isProgrammingMode = mainContent.classList.contains('programming-mode');
     const isScientificMode = mainContent.classList.contains('scientific-mode');
-    
+
     const isCalculatorViewActive = calculatorBody.style.display === 'grid'; // We use 'grid' because switchMainView sets it this way for the calculator
-    if (!isCalculatorViewActive) { return; }
-    
+    if (!isCalculatorViewActive) {
+        return;
+    }
+
     // Handle Backspace
     if (key === 'Backspace') {
-        event.preventDefault(); 
+        event.preventDefault();
         if (currentInput.length > 0) {
             updateDisplay(currentInput.slice(0, -1));
         }
@@ -743,17 +862,17 @@ const handleKeyboardInput = (event) => {
         let valueToAppend = key;
 
         if (isProgrammingMode) {
-            if (isDot) return; 
+            if (isDot) return;
             const allowed = PROGRAMMING_ALLOWED_KEYS[currentMode];
-            if (isDigit && !allowed.includes(key)) return; 
-            
+            if (isDigit && !allowed.includes(key)) return;
+
             valueToAppend = DISPLAY_OPERATOR_MAP[key] || key;
-            
+
             if (isOperator) {
                 let currentInput = inputField.value;
                 const programmingOperators = ['AND', 'OR', 'XOR', '<<', '>>', '+', '-', '×', '÷', 'MOD'];
                 const lastCharIsOperator = programmingOperators.some(pOp => currentInput.trim().endsWith(pOp));
-                
+
                 if (lastCharIsOperator) {
                     const lastOp = programmingOperators.find(pOp => currentInput.trim().endsWith(pOp));
                     currentInput = currentInput.slice(0, currentInput.lastIndexOf(lastOp)) + ' ' + valueToAppend + ' ';
@@ -771,7 +890,7 @@ const handleKeyboardInput = (event) => {
                 if (lastPart.includes('.')) return;
             }
         }
-        
+
         let newValue = inputField.value;
         if (lastOperationWasEquals && !isOperator) {
             newValue = '';
@@ -780,20 +899,20 @@ const handleKeyboardInput = (event) => {
             newValue = resultField.innerText;
             lastOperationWasEquals = false;
         }
-        
+
         newValue += valueToAppend;
         updateDisplay(newValue);
         return;
     }
-    
+
     // Handle scientific keys
     if (isScientificMode) {
         const isScientificChar = SCIENTIFIC_ALLOWED_CHARS.includes(key.toLowerCase());
-        
+
         if (isScientificChar) {
             event.preventDefault();
             let valueToAppend = key;
-            
+
             let newValue = inputField.value;
             if (lastOperationWasEquals) {
                 newValue = valueToAppend;
@@ -805,18 +924,11 @@ const handleKeyboardInput = (event) => {
             return;
         }
     }
-    
-    // Block other input keys
-    const isLetter = /^[a-zA-Z]$/.test(key);
-    if (isLetter && !isScientificMode && !isProgrammingMode) {
-        event.preventDefault();
-    }
 };
-
 
 /**
  * ========================================
- * 9. INITIALIZATION (INITIALIZATION)
+ * 9. INIT AND LISTENERS (INITIALIZATION)
  * ========================================
  */
 document.addEventListener('DOMContentLoaded', () => {
@@ -833,64 +945,83 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- Keyboard handling ---
     document.addEventListener('keydown', handleKeyboardInput);
-    
+
     inputField.addEventListener('input', () => {
         updateDisplay(inputField.value);
     });
-    
+
     // --- NAVIGATION HANDLING (FIXED) ---
-    
+
     hamburgerIcon.addEventListener('click', () => {
         toggleMenu(true);
-        switchMenuPanelContent('main'); 
+        switchMenuPanelContent('main');
     });
 
-    // 💡 KEY CHANGE: BACK_ICON logic was changed to check the 'active-panel' class.
+    // 🚀 ZMODYFIKOWANA LOGIKA BACK_ICON
     backIcon.addEventListener('click', () => {
-        // 1. If Menu is open
-        if (menuPanel.classList.contains('active')) {
-            
-            // Check which panel is currently visible by checking the CSS CLASS
-            const isHistoryVisible = historyContent.classList.contains('active-panel');
-            const isConvertersVisible = converterContent.classList.contains('active-panel');
-            const isMainMenuVisible = menuContent.classList.contains('active-panel');
+        const isProgrammingMode = mainContent.classList.contains('programming-mode');
+        const isScientificMode = mainContent.classList.contains('scientific-mode');
+        const isMenuOpen = menuPanel.classList.contains('active');
+        const isHistoryVisible = historyContent.classList.contains('active-panel');
+        const isConvertersVisible = converterContent.classList.contains('active-panel');
+        const isMainMenuVisible = menuContent.classList.contains('active-panel');
+        
+        // 1. Logika: ZAWSZE usuwaj klasy aktywnego trybu z menu, gdy kliknięto back-icon.
+        if (menuContent) {
+            menuContent.classList.remove('programming-active');
+            menuContent.classList.remove('scientific-active');
+        }
+        if (menuItems) {
+            menuItems.classList.remove('programming-active');
+            menuItems.classList.remove('scientific-active');
+        }
 
-            // If we are in History or Converters, return to the Main Menu List
-            if (isHistoryVisible || isConvertersVisible) {
-                switchMenuPanelContent('main');
-            } 
-            // If we are on the Main Menu List, close it
-            else if (isMainMenuVisible) {
-                toggleMenu(false); // Closes the menu, which leads to switchMainView('calculator')
-            }
+        // 2. Obsługa powrotu z sub-paneli (Historia/Konwertery) do Głównego Menu
+        if (isMenuOpen && (isConvertersVisible || isHistoryVisible)) {
+            switchMenuPanelContent('main'); // Powrót do głównej listy menu
+            
         } 
-        // 2. If Menu is closed, but we are in full-screen mode (Converter/Date)
+        // 3. Obsługa zamknięcia menu
+        else if (isMenuOpen && isMainMenuVisible) {
+            
+            // W trybach specjalnych (Programming/Scientific) nie zamykaj menu
+            if (isProgrammingMode || isScientificMode) {
+                // Pozostaw menu otwarte, aby wymusić przełączenie trybu przez linki
+            } else {
+                toggleMenu(false); // Zamknij menu, jeśli jest to tryb standardowy
+            }
+        }
+        // 4. Obsługa powrotu z pełnoekranowych widoków (Konwerter/Datownik)
         else if (converterModeBody.style.display === 'flex' || dateCalcBody.style.display === 'flex') {
-            switchMainView('calculator'); // Return to the main calculator
+            toggleCalculatorModes('normal'); // Resetowanie trybu kalkulatora do normalnego (reset szerokości)
+            switchMainView('calculator'); // Powrót do głównego kalkulatora
         }
     });
+    // 🚀 KONIEC ZMODYFIKOWANEJ LOGIKI BACK_ICON
 
     // Side Menu Links
     historyLink.addEventListener('click', (event) => {
         event.preventDefault();
-        toggleMenu(true); 
-        switchMenuPanelContent('history'); 
+        toggleMenu(true);
+        switchMenuPanelContent('history');
     });
 
-    // 🏆 ZMIANA: Przełączanie trybu naukowego i zarządzanie stylem menu
+    // 🏆 ZMIANA: Przełączanie trybu naukowego i zarządzanie stylem linków w menu
     scientificLink.addEventListener('click', (event) => {
         event.preventDefault();
-        
+
         const isCurrentlyScientific = mainContent.classList.contains('scientific-mode');
         const newMode = isCurrentlyScientific ? 'normal' : 'scientific';
-        
-        // Zaktualizuj tryb i klasy na kontenerach menu
-        toggleCalculatorModes(newMode); 
-        
+
+        toggleCalculatorModes(newMode);
+
         // Zarządzaj aktywnym stylem linków w menu
         document.querySelectorAll('.menu-items a').forEach(link => link.classList.remove('link-active'));
         if (newMode === 'scientific') {
             scientificLink.classList.add('link-active');
+        } else {
+             // Jeśli wracamy do normal, usuń aktywny styl z innych linków trybów
+             programmingLink.classList.remove('link-active'); 
         }
 
         toggleMenu(false);
@@ -898,31 +1029,33 @@ document.addEventListener('DOMContentLoaded', () => {
         switchMainView('calculator');
     });
 
-    // 🏆 ZMIANA: Przełączanie trybu programisty i zarządzanie stylem menu
+    // 🏆 ZMIANA: Przełączanie trybu programisty i zarządzanie stylem linków w menu
     programmingLink.addEventListener('click', (event) => {
         event.preventDefault();
-        
+
         const isCurrentlyProgramming = mainContent.classList.contains('programming-mode');
         const newMode = isCurrentlyProgramming ? 'normal' : 'programming';
 
-        // Zaktualizuj tryb i klasy na kontenerach menu
         toggleCalculatorModes(newMode);
 
         // Zarządzaj aktywnym stylem linków w menu
         document.querySelectorAll('.menu-items a').forEach(link => link.classList.remove('link-active'));
         if (newMode === 'programming') {
             programmingLink.classList.add('link-active');
+        } else {
+            // Jeśli wracamy do normal, usuń aktywny styl z innych linków trybów
+            scientificLink.classList.remove('link-active'); 
         }
-        
+
         // Logika ustawiania trybu DEC jako domyślnego dla kalkulatora programisty
         if (newMode === 'programming') {
             currentMode = 'dec';
             document.querySelectorAll('.program-mode').forEach(btn => btn.classList.remove('active-mode'));
             const decButton = document.querySelector('.programming-buttons [data-mode="dec"]');
-            if(decButton) {
+            if (decButton) {
                 decButton.classList.add('active-mode');
             }
-            updateProgrammingButtonState(currentMode); 
+            updateProgrammingButtonState(currentMode);
         }
 
         toggleMenu(false);
@@ -932,36 +1065,36 @@ document.addEventListener('DOMContentLoaded', () => {
 
     converterLink.addEventListener('click', (event) => {
         event.preventDefault();
-        toggleMenu(true); 
-        switchMenuPanelContent('converters'); 
+        toggleMenu(true);
+        switchMenuPanelContent('converters');
     });
-    
+
     document.querySelectorAll('.converter-content a[data-converter-type]').forEach(link => {
         link.addEventListener('click', (event) => {
             event.preventDefault();
+            // TODO: Wywołanie funkcji odpowiedzialnej za wyświetlanie konkretnego konwertera
+            
             toggleMenu(false);
             switchMainView('converterBody');
         });
     });
 
-    // 🏆 CHANGE INTRODUCED HERE: Switching between Date Calculator and Normal mode
+    // Przełączanie między Kalkulatorem Dat a Normalnym widokiem
     dateLink.addEventListener('click', (event) => {
         event.preventDefault();
         toggleMenu(false);
         
-        // Check if the date calculator view is already active
+        // Jeśli jest już aktywny, wróć do głównego kalkulatora, w przeciwnym razie przełącz na Datownik
         if (dateCalcBody.style.display === 'flex') {
-            // If YES, return to the main calculator ('calculator')
             switchMainView('calculator');
         } else {
-            // If NO, switch to the Date Calculator
             switchMainView('dateCalculator');
         }
     });
 
     clearHistoryBtn.addEventListener('click', clearHistory);
-    
+
     // --- Initial settings ---
     switchMainView('calculator');
-    updateDisplay(''); 
+    updateDisplay('');
 });
