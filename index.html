@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="przeliczniki.css">
     <link rel="stylesheet" href="date-style.css">
     <link rel="stylesheet" href="animation.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"> 
     <link rel="shortcut icon" href="calculator.png" type="image/x-icon">
     <style>
         .converter-section {
@@ -42,6 +42,9 @@
                 transform: none;
             }
         }
+        #input {
+            text-align: right;
+        }
     </style>
 </head>
 
@@ -59,7 +62,7 @@
                 </div>
             </div>
             <div class="calculator-body section-visible">
-                <input type="text" name="" id="input" placeholder="0">
+                <input type="text" name="" id="input" placeholder="0" oninput="scrollToEnd(this)">
                 <div id="result">0</div>
                 <div class="buttons-container">
                     <div class="programming-buttons">
@@ -395,6 +398,24 @@
             DATE_CALCULATOR_BODY.removeClass('section-visible');
             HISTORY_CONTENT_PANEL.removeClass('section-visible');
             CALCULATOR_BODY.addClass('section-visible');
+            MENU_PANEL.removeClass('visible'); // Dodane, aby upewnić się, że menu jest zamknięte
+            HAMBURGER_ICON.show();
+            activeInput = document.getElementById('input');
+            if (activeInput) activeInput.focus();
+        }
+
+        function showProgrammingModeView() {
+            // Funkcja pomocnicza do powrotu do widoku trybu programistycznego
+            CONVERTER_MODE_BODY.removeClass('section-visible');
+            CONVERTER_CONTENT_PANEL.removeClass('section-visible');
+            DATE_CALCULATOR_BODY.removeClass('section-visible');
+            HISTORY_CONTENT_PANEL.removeClass('section-visible');
+            
+            CALCULATOR_BODY.addClass('section-visible');
+            MAIN_CONTENT.addClass('programming-mode');
+            CALCULATOR_BODY.addClass('programming-mode');
+            
+            MENU_PANEL.removeClass('visible');
             HAMBURGER_ICON.show();
             activeInput = document.getElementById('input');
             if (activeInput) activeInput.focus();
@@ -581,9 +602,23 @@
             }
         });
 
+        // 🚀 KLUCZOWA ZMIANA LOGIKI DLA BACK_ICON
         BACK_ICON.on('click', function () {
-            showCalculatorView(); 
+            const isProgrammingModeActive = MAIN_CONTENT.hasClass('programming-mode');
+            const isMenuVisible = MENU_PANEL.hasClass('visible');
+            const isConverterContentOpen = CONVERTER_CONTENT_PANEL.hasClass('active-panel');
+            
+            // Warunek: Tryb Programistyczny jest aktywny I otwarte jest menu I widoczna jest lista konwerterów
+            if (isProgrammingModeActive && isMenuVisible && isConverterContentOpen) {
+                // Jeśli jest otwarte menu w trybie programistycznym, zamknij je i wróć do trybu programistycznego
+                showProgrammingModeView(); 
+                // showProgrammingModeView() zawiera logikę ukrycia menu oraz ustawienia widoku i klas trybu programistycznego.
+            } else {
+                // Domyślne zachowanie: powrót do widoku podstawowego (Standardowego) kalkulatora
+                showCalculatorView(); 
+            }
         });
+        // 🚀 KONIEC ZMIANY DLA BACK_ICON
 
         $('.converter-content .converters-list a').on('click', function (e) {
             e.preventDefault();
@@ -694,5 +729,8 @@
         showCalculatorView();
         calculateDateDifference();
     });
+    function scrollToEnd(inputElement) {
+        inputElement.scrollLeft = inputElement.scrollWidth;
+    }
 </script>
 </html>
